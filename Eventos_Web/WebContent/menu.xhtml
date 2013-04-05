@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+      
+    <body>
+	    <ui:composition>
+ 
+		<p:tabMenu activeIndex="0">  
+		    <p:menuitem value="Cadastrar Usuario" url="/index.xhtml" icon="ui-icon-star"/>  
+		    <p:menuitem value="Submeter Trabalho" url="/submeter_trabalho.xhtml" icon="ui-icon-search" />  
+		    <p:menuitem value="Avaliar Trabalho" url="/avaliar_trabalho.xhtml" icon="ui-icon-document"/>  
+		    <p:menuitem value="Listar Trabalhos" url="/listar_trabalhos.xhtml" icon="ui-icon-wrench"/>
+		</p:tabMenu>  
+		<h:form>
+ 			<h:commandLink value="sair" action="#{usuarioMB.logout}" ajax="false"/>
+ 		</h:form>
+	    </ui:composition>
+    </body>
+</html>

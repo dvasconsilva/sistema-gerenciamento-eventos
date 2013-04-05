@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  <display-name>Eventos_Web2</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  <servlet>
+    <servlet-name>FacesServlet</servlet-name>
+    <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FacesServlet</servlet-name>
+    <url-pattern>*.xhtml</url-pattern>
+  </servlet-mapping>
+  
+  <security-role>
+  	<description>Administrador</description>
+  	<role-name>Role_Administrador</role-name>
+  </security-role>
+  <security-role>
+    <description>Participante</description>
+    <role-name>Role_Participante</role-name>
+  </security-role>
+  <security-role>
+    <description>Palestrante</description>
+    <role-name>Role_Palestrante</role-name>
+  </security-role>
+  <security-role>
+    <description>Organizador</description>
+    <role-name>Role_organizador</role-name>
+  </security-role>
+  <security-role>
+    <description>Avaliador</description>
+    <role-name>Role_avaliador</role-name>
+  </security-role>
+  
+  <!-- Resource / Role Mapping  -->
+<security-constraint>
+  <display-name>Area Avaliador</display-name>
+  <web-resource-collection>
+      <web-resource-name>avaliador_resources</web-resource-name>
+      <url-pattern>/avaliador/*</url-pattern>
+      <http-method>GET</http-method>
+      <http-method>POST</http-method>
+  </web-resource-collection>
+  <auth-constraint>
+      <description>Apenas para avaliadores</description>
+      <role-name>Role_Avaliador</role-name>
+  </auth-constraint>
+  <user-data-constraint>
+      <transport-guarantee>NONE</transport-guarantee>
+  </user-data-constraint>
+</security-constraint>
+
+<security-constraint>
+  <display-name>Area Administracao</display-name>
+  <web-resource-collection>
+      <web-resource-name>administrador_resources</web-resource-name>
+      <url-pattern>/administrador/*</url-pattern>
+      <http-method>GET</http-method>
+      <http-method>POST</http-method>
+  </web-resource-collection>
+  <auth-constraint>
+      <description>Apenas para administradores</description>
+      <role-name>Role_Administrador</role-name>
+  </auth-constraint>
+  <user-data-constraint>
+      <transport-guarantee>NONE</transport-guarantee>
+  </user-data-constraint>
+</security-constraint>
+
+<security-constraint>
+  <display-name>Area Participante</display-name>
+  <web-resource-collection>
+      <web-resource-name>participante_resources</web-resource-name>
+      <url-pattern>/participante/*</url-pattern>
+      <http-method>GET</http-method>
+      <http-method>POST</http-method>
+  </web-resource-collection>
+  <auth-constraint>
+      <description>Apenas para participantes</description>
+      <role-name>Role_Participante</role-name>
+  </auth-constraint>
+  <user-data-constraint>
+      <transport-guarantee>NONE</transport-guarantee>
+  </user-data-constraint>
+</security-constraint>
+
+<security-constraint>
+  <display-name>Area Palestrante</display-name>
+  <web-resource-collection>
+      <web-resource-name>palestrante_resources</web-resource-name>
+      <url-pattern>/palestrante/*</url-pattern>
+      <http-method>GET</http-method>
+      <http-method>POST</http-method>
+  </web-resource-collection>
+  <auth-constraint>
+      <description>Apenas para palestrantes</description>
+      <role-name>Role_Palestrante</role-name>
+  </auth-constraint>
+  <user-data-constraint>
+      <transport-guarantee>NONE</transport-guarantee>
+  </user-data-constraint>
+</security-constraint>
+
+<security-constraint>
+  <display-name>Area Organizacao</display-name>
+  <web-resource-collection>
+      <web-resource-name>administrador_resources</web-resource-name>
+      <url-pattern>/organizador/*</url-pattern>
+      <http-method>GET</http-method>
+      <http-method>POST</http-method>
+  </web-resource-collection>
+  <auth-constraint>
+      <description>Apenas para organizadores</description>
+      <role-name>Role_Organizador</role-name>
+  </auth-constraint>
+  <user-data-constraint>
+      <transport-guarantee>NONE</transport-guarantee>
+  </user-data-constraint>
+</security-constraint>
+
+
+
+<!-- Login Prompt -->        
+<login-config><auth-method>FORM</auth-method>
+<form-login-config>
+  <form-login-page>/protecao/login.xhtml</form-login-page>
+  <form-error-page>/protecao/loginErro.xhtml</form-error-page>
+</form-login-config>
+  
+</login-config>
+<error-page>
+    <error-code>403</error-code>
+    <location>/protecao/AccessDenied.xhtml</location>
+  </error-page>
+</web-app>

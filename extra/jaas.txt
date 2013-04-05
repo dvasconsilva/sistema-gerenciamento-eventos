@@ -1,0 +1,27 @@
+
+<security-domain name="jaasProject" cache-type="default">
+                    
+	<authentication>
+                        
+		<login-module code="Database" flag="required">
+                            
+		<module-option name="dsJndiName" value="java:/PDSC"/>
+                            
+		<module-option name="principalsQuery" value="select password from usuario where username =?"/>
+   
+  		<module-option name="rolesQuery" value="select p.role, 'Roles' from papel p, permissao pe, usuario u where p.id = pe.id_papel and pe.id_usuario = u.id and u.username =?"/>
+                            <module-option name="unauthenticatedIdentity" value="guest"/>
+                        
+		</login-module>
+                    
+	</authentication>
+                
+</security-domain>
+
+
+Adicionar o xml acima no standalone.xml
+
+ficará dentro da tag 
+<subsystem xmlns="urn:jboss:domain:security:1.1">
+            
+		<security-domains>
