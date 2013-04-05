@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf13614070279070" configfile="/Eventos_Web2/WebContent/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="&quot;/admin/listar_trabalhos.xhtml&quot;" id="pf13643164012473" referenceLink="//@navigationRule.1/@navigationCase.0/@toViewId|" outlinks="pf13643164012474" inlinks="pf13643164119926" path="&quot;/admin/listar_trabalhos.xhtml&quot;"/>
+  <nodes xsi:type="pageflow:PFPage" name="&quot;/admin/avaliar_trabalho.xhtml&quot;" x="-2" y="144" id="pf13643164012475" referenceLink="//@navigationRule.1/@fromViewId|" outlinks="pf13643164119926" inlinks="pf13643164012474" path="&quot;/admin/avaliar_trabalho.xhtml&quot;"/>
+  <links id="pf13643164012474" target="pf13643164012475" source="pf13643164012473" outcome="avaliar_trabalho"/>
+  <links id="pf13643164119926" target="pf13643164012473" source="pf13643164012475" outcome="listar_trabalhos">
+    <bendPoints d1Width="396" d1Height="-49" d2Width="396" d2Height="95"/>
+  </links>
+</pageflow:Pageflow>

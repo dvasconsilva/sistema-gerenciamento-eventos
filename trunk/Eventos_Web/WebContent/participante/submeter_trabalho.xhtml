@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/index2.xhtml">
+	<ui:define name="conteudo">
+	
+		<h:form>
+			<p:growl id="messages" showDetail="true" autoUpdate="true" closable="true" />
+			<h:panelGrid columns="2">
+				<h:outputText value="Titulo: " />
+				<h:inputText value="#{palestranteMB.trabalho.titulo}"
+					required="true" />
+
+				<h:outputText value="Descricao: " />
+				<p:editor id="editor" value="#{palestranteMB.trabalho.descricao}" width="600"/>
+
+				<h:outputText value="Tipo Trabalho: " />
+				<h:selectOneMenu value="#{palestranteMB.tipoT.id}">
+					<f:selectItem itemValue="" itemLabel="Selecione..." />
+					<f:selectItems value="#{palestranteMB.tipoTrabalho}" />
+				</h:selectOneMenu>
+				
+			
+				<h:outputText value="Nome"/>
+				<h:inputText value="#{palestranteMB.usuario.nome}"/>
+				<h:outputText value="CPF"/>
+				<h:inputText value="#{palestranteMB.usuario.cpf}"/>
+				<h:outputText value="Email"/>
+				<h:inputText value="#{palestranteMB.usuario.email}"/>
+				
+		<h:commandButton action="#{palestranteMB.adicionarPalestrante}"
+			value="Adicionar" />
+				
+		<h:dataTable value="#{palestranteMB.listarPalestrantes}" var="p">
+			
+			 <h:column>
+			 	<f:facet name="header">
+					<h:outputText value="Nome" />
+				</f:facet>
+ 				<h:outputText value="#{p.usuario.nome}"/>
+ 			</h:column>
+ 			<h:column>
+ 				<f:facet name="header">
+					<h:outputText value="CPF" />
+				</f:facet>
+ 				<h:outputText value="#{p.usuario.cpf}"/>
+ 			</h:column>
+ 			<h:column>
+ 				<f:facet name="header">
+					<h:outputText value="Email" />
+				</f:facet>
+ 				<h:outputText value="#{p.usuario.email}"/>
+ 			</h:column>
+ 			<h:column>
+ 			<f:facet name="header">
+						<h:outputText value="Delete" />
+				</f:facet>
+					<h:commandLink id="delete" action="#{palestranteMB.remover(p)}"
+						value="Delete" />
+			</h:column>
+		</h:dataTable>
+				
+				<h:commandButton action="#{palestranteMB.submeterTrabalho}"
+					value="Salvar" />
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

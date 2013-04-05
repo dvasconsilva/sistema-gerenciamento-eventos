@@ -1,0 +1,7 @@
+Adicionar na tabela "Papel", os seguintes papeis
+
+Role_Participante
+Role_Palestrante
+Role_Organizador
+Role_Avaliador
+Role_Administrador
