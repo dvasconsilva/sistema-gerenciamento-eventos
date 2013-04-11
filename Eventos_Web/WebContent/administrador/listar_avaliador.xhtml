@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
@@ -6,35 +6,16 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
-	
-  
-<h:head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-<link rel="StyleSheet" type="text/css" href="css/style.css" media="screen" />
-</h:head>
 
-<h:body>
-	
-	<div id="header">
-		<ui:insert name="header" >
-		  <ui:include src="/header.xhtml" />
-		</ui:insert>
-	</div>
-	
-	<div id="menu">
-		<ui:insert name="menu">
-			<ui:include src="/menu.xhtml" />
-		</ui:insert>
-	</div>
+<ui:composition template="/public/template.xhtml">
+	<ui:define name="conteudo">
 
-	<div id="estrutura">
-	
-		<div id="conteudo">
-						
-			<h:form>	
-<p:dataTable value="#{avaliadorMB.listarAvaliadores}" var="avali" id="lista_Avaliador"
-				emptyMessage="Nenhum Avaliador cadastrado" paginator="true" rows="10"
-				paginatorTemplate="{PageLinks} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,15">
+		<h:form>
+			<p:dataTable value="#{avaliadorMB.listarAvaliadores}" var="avali"
+				id="lista_Avaliador" emptyMessage="Nenhum Avaliador cadastrado"
+				paginator="true" rows="10"
+				paginatorTemplate="{PageLinks} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15">
 				<p:column headerText="ID">
 					<h:outputText value="#{avali.id}" />
 				</p:column>
@@ -45,39 +26,34 @@
 					<h:outputText value="#{avali.usuario.cpf}" />
 				</p:column>
 				<p:column>
- 			<f:facet name="header">
+					<f:facet name="header">
 						<h:outputText value="Delete" />
-				</f:facet>
-					<h:commandLink id="delete" action="#{avaliadorMB.excluirAvaliador(avali)}"
-						value="Delete" />
-			</p:column>
-			
-			<p:column>
- 			<f:facet name="header">
+					</f:facet>
+					<h:commandLink id="delete"
+						action="#{avaliadorMB.excluirAvaliador(avali)}" value="Delete" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
 						<h:outputText value="Editar" />
-				</f:facet>
+					</f:facet>
 					<h:commandLink id="editar" action="#{avaliadorMB.atualizar(avali)}"
 						value="editar" />
-			</p:column>
-			
-</p:dataTable>
-<p:confirmDialog id="confirmDialog" message="Excluir o avaliador: #{avali}" header="Certeza?"
+				</p:column>
+
+			</p:dataTable>
+			<p:confirmDialog id="confirmDialog"
+				message="Excluir o avaliador: #{avali}" header="Certeza?"
 				severity="alert" widgetVar="confirmation">
 
-				<p:commandButton id="confirm" value="Sim" oncomplete="confirmation.hide()"
+				<p:commandButton id="confirm" value="Sim"
+					oncomplete="confirmation.hide()"
 					action="#{avaliadorMB.excluirAvaliador(avali)}" />
-				<p:commandButton id="decline" value="Nao" onclick="confirmation.hide()" type="button" />
+				<p:commandButton id="decline" value="Nao"
+					onclick="confirmation.hide()" type="button" />
 			</p:confirmDialog>
-</h:form>	
-		
-		</div>
-	</div>
-	
-	<div id="footer">
-		<ui:insert name="footer" >
-		  <ui:include src="/footer.xhtml" />
-		</ui:insert>
-	</div>
-	
-</h:body>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
 </html>

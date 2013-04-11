@@ -23,6 +23,7 @@ import br.edu.ifrn.eventos.interfaces.PalestranteDAORemote;
 import br.edu.ifrn.eventos.interfaces.PermissaoPapelDAORemote;
 import br.edu.ifrn.eventos.interfaces.UsuarioDAORemote;
 import br.edu.ifrn.eventos.seguranca.dominio.Papel;
+import br.edu.ifrn.eventos.seguranca.dominio.Permissao;
 import br.edu.ifrn.eventos.seguranca.dominio.Usuario;
 import br.ifrn.eventos.util.Mensagens;
 
@@ -54,20 +55,28 @@ public class PalestranteMB {
 	
 	@PostConstruct
 	public void inserirUsuarioListaPalestrante(){
-	Usuario usuarioLogado = this.usuarioDAO.buscarUsuarioEmail(new UsuarioMB().UsuarioLogado());
+	System.out.println("---------------------" +new UsuarioMB().UsuarioLogado());
+	Usuario usuarioLogado = this.usuarioDAO.buscarUsuarioEmail(new UsuarioMB().UsuarioLogado());	
+	Papel papel = buscarPapel();
 	
-	 Papel papel = this.permissaoBEAN.buscarPapel("Role_Palestrante");
-	this.permissaoBEAN.adicionarPermissao(usuarioLogado, papel);
+	//verifica se o usuario ja tem permissao
+	if(!varificarPermissaoUsuario(usuarioLogado, papel)){
+		System.out.println("aqui " + papel.getNomePapel() + " " + usuarioLogado.getNome());
+		
+		this.permissaoBEAN.adicionarPermissao(usuarioLogado, papel);
+	}
+	
+	System.out.println(varificarPermissaoUsuario(usuarioLogado, papel));
 	
 	palestrante.setUsuario(usuarioLogado);
-	//this.palestranteDAO.adicionaPalestrantes(palestrante);
-	System.out.println("------------------------------- 1");
-	palestrantes(palestrante);
+	
+	this.palestranteDAO.adicionaPalestrantes(palestrante);
+	//palestrantes(palestrante);
 	}
 	
 	public void submeterTrabalho() {
 		trabalho.setTipoTrabalho(palestranteDAO.listarTipo(tipoT.getId()));
-		trabalho.setPalestrante(this.palestranteDAO.getPalestrantes());
+		trabalho.setPalestrante(listaPalestrantes);
 		trabalho.setStatus(StatusTrabalhoEnum.AGUARDANDO);
 		trabalho2 = palestranteDAO.submeterTrabalho(trabalho);
 		avaliacao.setTrabalho(trabalho2);
@@ -88,13 +97,15 @@ public class PalestranteMB {
 		if(listaPalestrantes.size() < 2){
 			if(addUsuario != null){
 				
-				Papel papel = this.permissaoBEAN.buscarPapel("Role_Palestrante");
-				this.permissaoBEAN.adicionarPermissao(addUsuario, papel);
+				Papel papel = buscarPapel();
+				
+				if(!varificarPermissaoUsuario(addUsuario, papel)){
+					adicionarPermissao(addUsuario, papel);
+				}
 				
 				palestrante.setUsuario(addUsuario);
-				//this.palestranteDAO.adicionaPalestrantes(palestrante); //Associa ao trabalhoa a submeter
-				palestrantes(palestrante);
-				System.out.println("------------------------------- 2");
+				this.palestranteDAO.adicionaPalestrantes(palestrante); //Associa ao trabalhoa a submeter
+				//palestrantes(palestrante);
 				
 			}else
 				if(addUsuario == null){
@@ -102,15 +113,16 @@ public class PalestranteMB {
 						usuario.getNome(), usuario.getEmail(), "eventos", false);
 				
 					usuarioNaoCadastrado = this.cadastroUsuarioDAO.CadastrarUsuario(usuarioNaoCadastrado);
-					Papel papel = this.permissaoBEAN.buscarPapel("Role_Palestrante");
-					this.permissaoBEAN.adicionarPermissao(usuarioNaoCadastrado, papel);
+					Papel papel = buscarPapel();
+					adicionarPermissao(usuarioNaoCadastrado, papel);
 					
 					palestrante.setUsuario(usuarioNaoCadastrado);
-					palestrantes(palestrante);
-					System.out.println("------------------------------- 3");
+					//palestrantes(palestrante);
+					this.palestranteDAO.adicionaPalestrantes(palestrante);
+					
 				}	
 		}else
-			System.out.println("o numero de palestrantes foi excedido");
+			new Mensagens().erro(FacesContext.getCurrentInstance(), "O numero maximo de palestrantes e 2");
 	}
 	
 	//remove palestrante da lista
@@ -133,13 +145,31 @@ public class PalestranteMB {
 		}
 	}
 	
+	public Papel buscarPapel(){
+		return this.permissaoBEAN.buscarPapel("Role_Palestrante");
+	}
+	
+	public void adicionarPermissao(Usuario addUsuario, Papel papel){
+		this.permissaoBEAN.adicionarPermissao(addUsuario, papel);
+	}
+	
+	public boolean varificarPermissaoUsuario(Usuario usuario, Papel papel){
+		Permissao p = this.permissaoBEAN.verificarPermissaoUsuario(usuario, papel);
+		
+		if(p != null){
+			System.out.println(p.getId() + "  " + p.getUsuario().getNome() + " " + p.getPapel().getNomePapel());
+			return true;
+		}else
+			return false;
+	}
 	//lista palestrantes
 	public List<Palestrante>getListarPalestrantes(){
+		listaPalestrantes = this.palestranteDAO.getPalestrantes();
 		return listaPalestrantes;
 	}
 	
 	public void palestrantes(Palestrante palestrante){
-		System.out.println("??????");
+		
 		listaPalestrantes.add(palestrante);
 	}
 	
@@ -170,7 +200,7 @@ public class PalestranteMB {
 
 	//lista trabalhos submetidos exibindo seu status
 	public List<TrabalhoSubmetido> getStatusTrabalho(){
-		return this.palestranteDAO.statusTrabalhos();
+		return this.palestranteDAO.statusTrabalhos(new UsuarioMB().UsuarioLogado());
 	}
 	
 	public TipoTrabalho getTipoT() {

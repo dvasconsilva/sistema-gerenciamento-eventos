@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
@@ -6,111 +6,54 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
-	
 
-
-<h:head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-<link rel="StyleSheet" type="text/css" href="css/style.css" media="screen" />
-</h:head>
-
-<h:body>
+<ui:composition template="/public/template.xhtml">
+	<ui:define name="conteudo">
 	
-	<div id="header">
-		<ui:insert name="header" >
-		  <ui:include src="/header.xhtml" />
-		</ui:insert>
-	</div>
-	
-	<div id="menu">
-		<ui:insert name="menu">
-			<ui:include src="/menu.xhtml" />
-		</ui:insert>
-	</div>
-
-	<div id="estrutura">
-	
-		<div id="conteudo">
 						
 			<h:form>
 			
 			<p:growl id="messages" showDetail="true" autoUpdate="true" closable="true" />
 			<h:panelGrid columns="2">
 			
-			<table>
-					<tbody>
-						<tr>
-							<td>Título:</td>
-							<td><p:inputText value="#{eventosMB.evento.nome}" required="true"/> <br/></td>
-						</tr>
-						
-						<tr>
-							<td>Descrição:</td>
-							<td><p:editor id="editor" value="#{eventosMB.evento.descricao}" width="600"/><br/></td>
-						</tr>
-						
-						<tr>
-							<td>Periodo de Inscrição</td>
-							<td><p:calendar value="#{eventosMB.evento.dataInicial}" id="popupButtonCal" showOn="button" />  
-						  						      
-						        <h:panelGrid id="display" columns="2" cellpadding="5">  
-						            
-						            <h:outputText value="#{eventosMB.evento.dataInicial}">  
-						                <f:convertDateTime pattern="d/M/yyyy"/>  
-						            </h:outputText>  
-						              
-						        </h:panelGrid>  
-						    </td>
-						    <td><p:calendar value="#{eventosMB.evento.dataFinal}" id="popupButtonCalendar" showOn="button" />  
-						  						      
-						        <h:panelGrid id="display2" columns="2" cellpadding="5">  
-						            
-						            <h:outputText value="#{eventosMB.evento.dataFinal}">  
-						                <f:convertDateTime pattern="d/M/yyyy"/>  
-						            </h:outputText>  
-						              
-						        </h:panelGrid>  
-						    </td>
-						</tr>
-										
-						<tr>
-							<td>Gratuito:</td>
-							<td><input type="checkbox" id="checkBox" value="#{eventosMB.evento.gratuito}" onclick="enableDisable(this.checked, 'textBox')"/><br/></td>
+			
+			<h:outputText value="TÃ­tulo"/>
+			<p:inputText value="#{eventosMB.evento.nome}" required="true"/> 
+			
+			<h:outputText value="DescriÃ§Ã£o"/>		
+			<p:editor id="editor" value="#{eventosMB.evento.descricao}" width="600"/>
+				
+			<h:outputText value="SubmisÃ£o de Trabalhos"/>		
+			<p:calendar value="#{eventosMB.evento.dataInicial}" id="popupButtonCal" showOn="button" />  
+				<h:panelGrid id="display" columns="2" cellpadding="5">  
+					 <h:outputText value="#{eventosMB.evento.dataInicial}">  
+						 <f:convertDateTime pattern="d/M/yyyy"/>  
+			 </h:outputText>  
+			 </h:panelGrid>  
+				<p:calendar value="#{eventosMB.evento.dataFinal}" id="popupButtonCalendar" showOn="button" />  				      
+					<h:panelGrid id="display2" columns="3" cellpadding="5">  			            
+						<h:outputText value="#{eventosMB.evento.dataFinal}">  
+						     <f:convertDateTime pattern="d/M/yyyy"/>  
+						 </h:outputText>         
+					</h:panelGrid>  
+
+			<h:outputText value="Gratuito"/>
+			<input type="checkbox" id="checkBox" value="#{eventosMB.evento.gratuito}" onclick="enableDisable(this.checked, 'textBox')"/>
 <!-- 							<td><h:selectBooleanCheckbox value="#{eventosMB.evento.gratuito}" onclick="enableDisable(!this.checked, 'textBox')"/><br/></td> -->
-						</tr>
 <!-- 						<h:inputText disabled="#{!bean.permissionToWrite}"></h:inputText> -->
 						
 						   
 						
-<!-- 					Fazer verificação se o boolean gratuito for true dá um hide no valor -->
-						<tr>
-							<td>Valor:</td>
-							<td><input type="text" id="textBox" value="#{eventosMB.evento.valor}"/><br/></td>
+<!-- 					Fazer verificaÃ§Ã£o se o boolean gratuito for true dÃ¡ um hide no valor -->
+			<h:outputText value="Valor"/>
+				<input type="text" id="textBox" value="#{eventosMB.evento.valor}"/>
 <!-- 							<td><p:inputText value="#{eventosMB.evento.valor}" required="true" id="texto"/> <br/></td> -->
-						</tr>
 						
 						<h:commandButton action="#{eventosMB.cadastrarEvento}" value="Salvar" />
-					</tbody>
-			</table>
 			
 			</h:panelGrid>
 		</h:form>
 		
-		</div>
-	</div>
-	
-	<div id="footer">
-		<ui:insert name="footer" >
-		  <ui:include src="/footer.xhtml" />
-		</ui:insert>
-	</div>
-	
-	<script language="javascript">
-    function enableDisable(bEnable, textBoxID)
-    {
-         document.getElementById(textBoxID).disabled = bEnable
-    }
-</script>
-	
-</h:body>
+</ui:define>
+</ui:composition>
 </html>

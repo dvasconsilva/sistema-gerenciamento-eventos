@@ -24,6 +24,8 @@ public class Participante implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
+	private boolean presente;
+	
 	@OneToOne
 	private Usuario usuario;
 	
@@ -46,6 +48,15 @@ public class Participante implements Serializable{
 		this.id = id;
 	}
 
+	
+	public boolean isPresente() {
+		return presente;
+	}
+
+	public void setPresente(boolean presente) {
+		this.presente = presente;
+	}
+
 	public Usuario getUsuario() {
 		return usuario;
 	}
@@ -62,6 +73,7 @@ public class Participante implements Serializable{
 		this.evento = evento;
 	}
 
+	
 	public List<Atividade> getAtividade() {
 		return atividades;
 	}

@@ -18,8 +18,10 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.render.RenderKit;
 
 import br.edu.ifrn.eventos.dominio.Atividade;
+import br.edu.ifrn.eventos.dominio.Palestrante;
 import br.edu.ifrn.eventos.dominio.Participante;
 import br.edu.ifrn.eventos.interfaces.AtividadeDAORemote;
+import br.edu.ifrn.eventos.interfaces.PalestranteDAORemote;
 import br.edu.ifrn.eventos.interfaces.ParticipanteMBRemote;
 import br.ifrn.eventos.util.Mensagens;
 
@@ -33,8 +35,11 @@ public class ParticipanteMB {
 	@EJB
 	private ParticipanteMBRemote participanteBEAN;
 	
+	@EJB PalestranteDAORemote palestranteBEAN;
+	
 	private Atividade atividade;
 	private List<Atividade> atividadeAdicinada = new ArrayList<Atividade>();
+	private List<Palestrante> palestrantes = new ArrayList<Palestrante>();
 	
 	public List<Atividade> getListarAtividades(){
 		return this.atividadeBEAN.getAtividades();
@@ -42,6 +47,9 @@ public class ParticipanteMB {
 	
 	public String detalhesAtividade(Atividade a){
 		atividade = this.atividadeBEAN.getDetalheAtividade(a);
+		palestrantes = this.palestranteBEAN.ListarPalestrantes(a.getTrabalho().getId());
+		
+		System.out.println(palestrantes.size());
 		return "/participante/detalhe_atividade.xhtml";
 	}
 
@@ -64,6 +72,14 @@ public class ParticipanteMB {
 
 	public void setAtividade(Atividade atividade) {
 		this.atividade = atividade;
+	}
+
+	public List<Palestrante> getPalestrantes() {
+		return palestrantes;
+	}
+
+	public void setPalestrantes(List<Palestrante> palestrantes) {
+		this.palestrantes = palestrantes;
 	}
 	
 	

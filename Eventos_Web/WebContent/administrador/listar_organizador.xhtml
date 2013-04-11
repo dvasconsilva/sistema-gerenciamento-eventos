@@ -1,45 +1,22 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
-<h:head>
-<meta name="keywords" content="" />
-<meta name="description" content="" />
-<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<title>Sistema de Gerenciamento de Eventos</title>
-<link href="http://fonts.googleapis.com/css?family=Oxygen:400,700,300" rel="stylesheet" type="text/css" />
-<link href="style.css" rel="stylesheet" type="text/css" media="screen" />
-</h:head>
-<body>
-<div id="wrapper">
-<!-- 	<div id="logo" class="container"> -->
-<!-- 		<h1><a href="#">Glissade </a></h1> -->
-<!-- 		<p>In posuere eleifend odio quisque semper augue.</p> -->
-<!-- 	</div> -->
-	<div id="menu-wrapper">
-		<div id="menu" class="container">
-			<ul>
-				<li class="current_page_item"><a href="index2.xhtml">Home</a></li>
-				<li><a href="status_trabalhos.xhtml">Status do Trabalho</a></li>
-				<li><a href="listar_trabalhos.xhtml">Listar Trabalho</a></li>
-				<li><a href="avaliar_trabalho.xhtml">Avaliar Trabalho</a></li>
-				<li><a href="Listar_tipotrabalho.xhtml">Listar Tipo Trabalho</a></li>
-			</ul>
-		</div>
-	</div>
 
-<div id="estrutura">
-	
-		<div id="conteudo">
-						
-			<h:form>
-				
-<p:dataTable value="#{organizadorMB.listarOrganizadores}" var="organi" id="lista_Organizador"
-				emptyMessage="Nenhum Organizador cadastrado" paginator="true" rows="10"
-				paginatorTemplate="{PageLinks} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,15">
+<ui:composition template="/public/template.xhtml">
+	<ui:define name="conteudo">
+
+		<h:form>
+
+			<p:dataTable value="#{organizadorMB.listarOrganizadores}"
+				var="organi" id="lista_Organizador"
+				emptyMessage="Nenhum Organizador cadastrado" paginator="true"
+				rows="10" paginatorTemplate="{PageLinks} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15">
 				<p:column headerText="ID">
 					<h:outputText value="#{organi.id}" />
 				</p:column>
@@ -50,73 +27,33 @@
 					<h:outputText value="#{organi.usuario.cpf}" />
 				</p:column>
 				<p:column>
- 			<f:facet name="header">
+					<f:facet name="header">
 						<h:outputText value="Delete" />
-				</f:facet>
-					<h:commandLink id="delete" action="#{organizadorMB.excluirOrganizador(organi)}"
+					</f:facet>
+					<h:commandLink id="delete"
+						action="#{organizadorMB.excluirOrganizador(organi)}"
 						value="Delete" />
-			</p:column>
-			<p:column>
-				<f:facet name="header">
-					<h:outputText value="Editar"/>
-				</f:facet>
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Editar" />
+					</f:facet>
 					<h:commandLink id="editar" />
-			</p:column>
-</p:dataTable>
-<p:confirmDialog id="confirmDialog" message="Excluir o organizador: #{organi}" header="Certeza?"
+				</p:column>
+			</p:dataTable>
+			<p:confirmDialog id="confirmDialog"
+				message="Excluir o organizador: #{organi}" header="Certeza?"
 				severity="alert" widgetVar="confirmation">
 
-				<p:commandButton id="confirm" value="Sim" oncomplete="confirmation.hide()"
+				<p:commandButton id="confirm" value="Sim"
+					oncomplete="confirmation.hide()"
 					action="#{organizadorMB.excluirOrganizador(organi)}" />
-				<p:commandButton id="decline" value="Nao" onclick="confirmation.hide()" type="button" />
+				<p:commandButton id="decline" value="Nao"
+					onclick="confirmation.hide()" type="button" />
 			</p:confirmDialog>
 
 		</h:form>
-		
-		</div>
-	</div>
 
-		<div style="clear: both;">&nbsp;</div>
-	</div>
-	<!-- end #page --> 
-	
-<div id="footer-bg">
-	<div id="footer-content" class="container">
-		<div id="column1">
-			<h2>Tellus feugiat eleifend</h2>
-			<ul class="list-style2">
-				<li class="first"><a href="#">Pellentesque quis elit non lectus gravida blandit.</a></li>
-				<li><a href="#">Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</a></li>
-				<li><a href="#">Phasellus nec erat sit amet nibh pellentesque congue.</a></li>
-				<li><a href="#">Cras vitae metus aliquam risus pellentesque pharetra.</a></li>
-				<li><a href="#">Maecenas vitae orci vitae tellus feugiat eleifend.</a></li>
-			</ul>
-		</div>
-		<div id="column2">
-			<h2>Etiam rhoncus volutpat</h2>
-			<ul class="list-style2">
-				<li class="first"><a href="#">Pellentesque quis elit non lectus gravida blandit.</a></li>
-				<li><a href="#">Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</a></li>
-				<li><a href="#">Phasellus nec erat sit amet nibh pellentesque congue.</a></li>
-				<li><a href="#">Cras vitae metus aliquam risus pellentesque pharetra.</a></li>
-				<li><a href="#">Maecenas vitae orci vitae tellus feugiat eleifend.</a></li>
-			</ul>
-		</div>
-		<div id="column3">
-			<h2>Recommended Links</h2>
-			<ul class="list-style2">
-				<li class="first"><a href="#">Pellentesque quis elit non lectus gravida blandit.</a></li>
-				<li><a href="#">Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</a></li>
-				<li><a href="#">Phasellus nec erat sit amet nibh pellentesque congue.</a></li>
-				<li><a href="#">Cras vitae metus aliquam risus pellentesque pharetra.</a></li>
-				<li><a href="#">Maecenas vitae orci vitae tellus feugiat eleifend.</a></li>
-			</ul>
-		</div>
-	</div>
-</div>
-<div id="footer">
-	<p>© 2013 Untitled Inc. All rights reserved. Lorem ipsum dolor sit amet nullam blandit consequat phasellus etiam lorem. Design by <a href="http://www.freecsstemplates.org">FCT</a>.  Photos by <a href="http://fotogrph.com/">Fotogrph</a>.</p>
-</div>
-<!-- end #footer -->
-</body>
+	</ui:define>
+</ui:composition>
 </html>
