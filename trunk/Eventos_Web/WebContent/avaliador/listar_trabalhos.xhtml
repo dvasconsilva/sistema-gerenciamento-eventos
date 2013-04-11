@@ -7,37 +7,37 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
-<ui:composition template="/index2.xhtml">
+<ui:composition template="/public/template.xhtml">
 	<ui:define name="conteudo">
 
-			<h:form id="form">
-				<p:messages id="messages" showDetail="true" autoUpdate="true"
-					closable="true" />
-				<p:tabView id="TabView" dynamic="true" var="t" cache="true"
-					value="#{avaliadorMB.tipoTrabalho}">
+		<h:form id="form">
+			<p:messages id="messages" showDetail="true" autoUpdate="true"
+				closable="true" />
+			<p:tabView id="TabView" dynamic="true" var="t" cache="true"
+				value="#{avaliadorMB.tipoTrabalho}">
 
-					<p:ajax event="tabChange" listener="#{avaliadorMB.onTabChange}" />
+				<p:ajax event="tabChange" listener="#{avaliadorMB.onTabChange}" />
 
 
-					<p:tab id="id" title="#{t.trabalhoTipo}">
-						<h:panelGrid columns="2" cellpadding="10" cellspacing="10">
-							<h:dataTable value="#{avaliadorMB.trabalhos}" var="t">
+				<p:tab id="id" title="#{t.trabalhoTipo}">
+					<h:panelGrid columns="2" cellpadding="10" cellspacing="10">
+						<h:dataTable value="#{avaliadorMB.trabalhos}" var="t">
 
-								<h:column>
+							<h:column>
 
-									<h:outputText value="#{t.titulo}" />
-								</h:column>
-								<h:column>
+								<h:outputText value="#{t.titulo}" />
+							</h:column>
+							<h:column>
 
-									<h:commandLink id="delete"
-										action="#{avaliadorMB.avaliarTrabalho(t.id)}" value="Avaliar" />
-								</h:column>
-							</h:dataTable>
+								<h:commandLink id="delete"
+									action="#{avaliadorMB.avaliarTrabalho(t.id)}" value="Avaliar" />
+							</h:column>
+						</h:dataTable>
 
-						</h:panelGrid>
-					</p:tab>
-				</p:tabView>
-			</h:form>
+					</h:panelGrid>
+				</p:tab>
+			</p:tabView>
+		</h:form>
 	</ui:define>
-	</ui:composition>
+</ui:composition>
 </html>

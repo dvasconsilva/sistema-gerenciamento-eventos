@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/public/template.xhtml">
+	<ui:define name="conteudo">
+<h:form id="form">
+		<p:messages id="messages" showDetail="true" autoUpdate="true"
+			closable="true" />
+		<p:tabView id="TabView" dynamic="true" var="t" cache="true"
+			value="#{organizadorMB.tiposTrabalho}">
+
+			<p:ajax event="tabChange" listener="#{organizadorMB.onTabChange}" />
+
+
+			<p:tab id="id" title="#{t.trabalhoTipo}">
+				<h:panelGrid columns="2" cellpadding="10" cellspacing="10">
+					<h:dataTable value="#{organizadorMB.atividades}" var="a">
+
+						<h:column>
+							<h:outputText value="#{a.trabalho.titulo}" />
+						</h:column>
+						<h:column>
+							<h:commandLink id="delete"
+								action="#{organizadorMB.imprimirListarParticipantes(a.id)}" value="  Gerar Lista" />
+						</h:column>
+					</h:dataTable>
+
+				</h:panelGrid>
+			</p:tab>
+		</p:tabView>
+	</h:form>
+</ui:define>
+</ui:composition>
+</html>

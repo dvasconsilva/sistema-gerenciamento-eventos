@@ -1,9 +1,10 @@
 package br.edu.ifrn.eventos.dominio;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,6 +25,11 @@ public class Atividade implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
+	private Date data;
+	private String horarioInicio;
+	private String horarioFim;
+	private String local;
 	
 	@ManyToMany(mappedBy = "atividades")
 	private List<Participante> participantes;
@@ -92,6 +98,39 @@ public class Atividade implements Serializable{
 
 	public void setTrabalho(TrabalhoSubmetido trabalho) {
 		this.trabalho = trabalho;
+	}
+
+	
+	public Date getData() {
+		return data;
+	}
+
+	public void setData(Date data) {
+		this.data = data;
+	}
+
+	public String getHorarioInicio() {
+		return horarioInicio;
+	}
+
+	public void setHorarioInicio(String horarioInicio) {
+		this.horarioInicio = horarioInicio;
+	}
+
+	public String getHorarioFim() {
+		return horarioFim;
+	}
+
+	public void setHorarioFim(String horarioFim) {
+		this.horarioFim = horarioFim;
+	}
+
+	public String getLocal() {
+		return local;
+	}
+
+	public void setLocal(String local) {
+		this.local = local;
 	}
 
 	@Override

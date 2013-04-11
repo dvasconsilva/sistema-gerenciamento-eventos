@@ -1,119 +1,30 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
-<h:head>
-<meta name="keywords" content="" />
-<meta name="description" content="" />
-<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<title>Sistema de Gerenciamento de Eventos</title>
-<link href="http://fonts.googleapis.com/css?family=Oxygen:400,700,300" rel="stylesheet" type="text/css" />
-<link href="style.css" rel="stylesheet" type="text/css" media="screen" />
-</h:head>
-<body>
-<div id="wrapper">
-<!-- 	<div id="logo" class="container"> -->
-<!-- 		<h1><a href="#">Glissade </a></h1> -->
-<!-- 		<p>In posuere eleifend odio quisque semper augue.</p> -->
-<!-- 	</div> -->
-	<div id="menu-wrapper">
-		<div id="menu" class="container">
-			<ul>
-				<li class="current_page_item"><a href="index2.xhtml">Home</a></li>
-				<li><a href="status_trabalhos.xhtml">Status do Trabalho</a></li>
-				<li><a href="listar_trabalhos.xhtml">Listar Trabalho</a></li>
-				<li><a href="avaliar_trabalho.xhtml">Avaliar Trabalho</a></li>
-				<li><a href="Listar_tipotrabalho.xhtml">Listar Tipo Trabalho</a></li>
-			</ul>
-		</div>
-	</div>
-	<div id="page" class="container">
-		<div class="post">
-			<h2 class="title">Status do Trabalho</h2>
-		</div>
+
+<ui:composition template="/public/template.xhtml">
+	<ui:define name="conteudo">
+
 		<h:form>
-			<p:dataTable value="#{palestranteMB.statusTrabalho}" var="s" emptyMessage="Nenhum Trabalho submetido" paginator="true" rows="10"
-				paginatorTemplate="{PageLinks} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,15">
-				<p:column headerText="Titulo" >
- 				<h:outputText value="#{s.titulo}"/>
- 			</p:column>
- 			<p:column headerText="Status">
- 				<h:outputText value="#{s.status}"/>
- 			</p:column>
+			<h:commandLink value="sair" action="#{usuarioMB.logout}" ajax="false" />
+		</h:form>
+
+		<h:form>
+			<p:dataTable value="#{palestranteMB.statusTrabalho}" var="s"
+				emptyMessage="Nenhum Trabalho submetido">
+				<p:column headerText="Titulo">
+					<h:outputText value="#{s.titulo}" />
+				</p:column>
+				<p:column headerText="Status">
+					<h:outputText value="#{s.status}" />
+				</p:column>
 			</p:dataTable>
 		</h:form>
-	</div>
-	
-	
-	<div id="page" class="container">
-		<div id="content">
-			<div class="post">
-				<h2 class="title">Breve descrição do Sistema</h2>
-				<div class="entry">
-<!-- 					<p>This is <strong>Glissade </strong>, a free, fully standards-compliant CSS template designed by <a href="http://www.freecsstemplates.org">FCT</a>.     The photos in this template are from <a href="http://fotogrph.com/"> Fotogrph</a>. This free template is released under a <a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attributions 3.0</a> license, so you are pretty much free to do whatever you want with it (even use it commercially) provided you keep the links in the footer intact. Aside from that, have fun with it :) </p> -->
-<!-- 					<p>Sed lacus. Donec lectus. Nullam pretium nibh ut turpis. Nam bibendum. In nulla tortor, elementum vel, tempor at, varius non, purus. Mauris vitae nisl nec metus placerat consectetuer. Donec ipsum. Proin imperdiet est. Phasellus <a href="#">dapibus semper urna</a>. Pellentesque ornare, orci in consectetuer hendrerit, urna elit eleifend nunc, ut consectetuer nisl felis ac diam. Etiam non felis. Donec ut ante. In id eros. Suspendisse lacus turpis,  egestas at sem.  Mauris quam enim,  in, rhoncus ut, lobortis a, est. Pellentesque ornare, orci in consectetuer hendrerit, urna elit eleifend nunc, ut consectetuer. Pellentesque viverra vulputate enim. Aliquam erat volutpat. Pellentesque tristique ante ut risus. Quisque dictum. Integer nisl risus, sagittis convallis, rutrum id, elementum congue, nibh. Suspendisse dictum porta lectus.</p> -->
-				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lorem turpis, tincidunt quis malesuada eu, posuere sit amet lectus. Nulla facilisi. Quisque nec nibh at urna vehicula malesuada sit amet vel nulla. Duis in nisl dolor. Mauris tortor lacus, laoreet et adipiscing at, rutrum non neque. Aliquam eleifend bibendum mi, ut molestie magna aliquet sed. Nullam in ligula nisl. Donec ultricies nunc ut est varius lacinia non id metus. Nulla laoreet arcu at nisl tempus id interdum tortor semper. Morbi a purus id diam fringilla egestas. Suspendisse nec libero velit, ultrices molestie lorem. Aenean convallis purus lorem. In magna purus, egestas id commodo porttitor, tincidunt pretium magna. Donec turpis nisl, blandit nec aliquam a, dictum id tellus. </p>
-				</div>
-			</div>
-			<div style="clear: both;">&nbsp;</div>
-		</div>
-		<!-- end #content -->
-		<div id="sidebar">
-			<div>
-				<h2>Acesso Rápido</h2>
-				<ul class="list-style2">
-					<li class="first"><a href="cadastrar_avaliador.xhtml">Cadastrar Avaliador</a></li>
-					<li><a href="cadastrarevento.xhtml">Cadastrar Evento</a></li>
-					<li><a href="cadastro_tipotrabalho.xhtml">Cadastrar Tipo de Trabalho</a></li>
-				</ul>
-			</div>
-		</div>
-		<!-- end #sidebar -->
-		<div style="clear: both;">&nbsp;</div>
-	</div>
-	<!-- end #page --> 
-	
-</div>
-<div id="footer-bg">
-	<div id="footer-content" class="container">
-		<div id="column1">
-			<h2>Tellus feugiat eleifend</h2>
-			<ul class="list-style2">
-				<li class="first"><a href="#">Pellentesque quis elit non lectus gravida blandit.</a></li>
-				<li><a href="#">Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</a></li>
-				<li><a href="#">Phasellus nec erat sit amet nibh pellentesque congue.</a></li>
-				<li><a href="#">Cras vitae metus aliquam risus pellentesque pharetra.</a></li>
-				<li><a href="#">Maecenas vitae orci vitae tellus feugiat eleifend.</a></li>
-			</ul>
-		</div>
-		<div id="column2">
-			<h2>Etiam rhoncus volutpat</h2>
-			<ul class="list-style2">
-				<li class="first"><a href="#">Pellentesque quis elit non lectus gravida blandit.</a></li>
-				<li><a href="#">Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</a></li>
-				<li><a href="#">Phasellus nec erat sit amet nibh pellentesque congue.</a></li>
-				<li><a href="#">Cras vitae metus aliquam risus pellentesque pharetra.</a></li>
-				<li><a href="#">Maecenas vitae orci vitae tellus feugiat eleifend.</a></li>
-			</ul>
-		</div>
-		<div id="column3">
-			<h2>Recommended Links</h2>
-			<ul class="list-style2">
-				<li class="first"><a href="#">Pellentesque quis elit non lectus gravida blandit.</a></li>
-				<li><a href="#">Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</a></li>
-				<li><a href="#">Phasellus nec erat sit amet nibh pellentesque congue.</a></li>
-				<li><a href="#">Cras vitae metus aliquam risus pellentesque pharetra.</a></li>
-				<li><a href="#">Maecenas vitae orci vitae tellus feugiat eleifend.</a></li>
-			</ul>
-		</div>
-	</div>
-</div>
-<div id="footer">
-	<p>© 2013 Untitled Inc. All rights reserved. Lorem ipsum dolor sit amet nullam blandit consequat phasellus etiam lorem. Design by <a href="http://www.freecsstemplates.org">FCT</a>.  Photos by <a href="http://fotogrph.com/">Fotogrph</a>.</p>
-</div>
-<!-- end #footer -->
-</body>
+	</ui:define>
+</ui:composition>
 </html>

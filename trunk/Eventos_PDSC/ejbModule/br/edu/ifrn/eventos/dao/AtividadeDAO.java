@@ -38,4 +38,29 @@ public class AtividadeDAO implements AtividadeDAORemote {
 		return (Atividade) query.getSingleResult();
 	}
 
+	@Override
+	public void editarAtividade(Atividade atividade) {
+		em.merge(atividade);
+		
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Atividade> getAtividades(int id) {
+		
+	Query query = this.em.createNativeQuery("select a.id, a.data, a.horariofim, a.horarioinicio, " +
+			"a.local, a.id_evento, a.trabalho_id from atividade a, trabalhosubmetido t " +
+			"where a.trabalho_id = t.id and t.id_tipoTrabalho = :id", Atividade.class);
+	
+	   return query.setParameter("id", id).getResultList();
+	}
+
+	@Override
+	public Atividade getAtividade(int id) {
+		Query query = this.em.createQuery("Select a from Atividade a where a.id = :id", Atividade.class);
+		return (Atividade) query.setParameter("id", id).getSingleResult();
+	}
+
+	
+
 }

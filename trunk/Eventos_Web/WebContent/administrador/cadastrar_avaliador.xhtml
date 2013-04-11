@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
@@ -6,45 +6,26 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
-	
-  
-<h:head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-<link rel="StyleSheet" type="text/css" href="css/style.css" media="screen" />
-</h:head>
 
-<h:body>
-	
-	<div id="header">
-		<ui:insert name="header" >
-		  <ui:include src="/header.xhtml" />
-		</ui:insert>
-	</div>
-	
-	<div id="menu">
-		<ui:insert name="menu">
-			<ui:include src="/menu.xhtml" />
-		</ui:insert>
-	</div>
+<ui:composition template="/public/template.xhtml">
+	<ui:define name="conteudo">
+		<h1>Cadastrar Avaliador</h1>
+		<h:form>
+			<p:messages id="messages" showDetail="false" autoUpdate="true"
+				closable="true" />
 
-	<div id="estrutura">
-	
-		<div id="conteudo">
-	<h1>Cadastrar Avaliador</h1>
-	<h:form>
-		<p:messages id="messages" showDetail="false" autoUpdate="true" closable="true"  />
-		
-		<h:panelGrid columns="2">
-		<h:outputText value="Nome: "/>
-		<p:inputText value="#{avaliadorMB.usuario.nome}" required="true"/>
-		<h:outputText value="CPF: "/>
-		<p:inputMask mask="999.999.999-99" value="#{avaliadorMB.usuario.cpf}" required="true"/>
-		<h:outputText value="Email: "/>
-		<p:inputText value="#{avaliadorMB.usuario.email}" required="true"/>
-		<h:commandButton action="#{avaliadorMB.cadastrarAvaliador}" value="Salvar"/>
-		</h:panelGrid>
-	</h:form>
-</div>
-</div>
-</h:body>
+			<h:panelGrid columns="2">
+				<h:outputText value="Nome: " />
+				<p:inputText value="#{avaliadorMB.usuario.nome}" required="true" />
+				<h:outputText value="CPF: " />
+				<p:inputMask mask="999.999.999-99"
+					value="#{avaliadorMB.usuario.cpf}" required="true" />
+				<h:outputText value="Email: " />
+				<p:inputText value="#{avaliadorMB.usuario.email}" required="true" />
+				<h:commandButton action="#{avaliadorMB.cadastrarAvaliador}"
+					value="Salvar" />
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>
 </html>

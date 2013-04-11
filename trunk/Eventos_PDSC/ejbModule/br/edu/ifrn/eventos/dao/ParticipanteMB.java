@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import br.edu.ifrn.eventos.dominio.Atividade;
 import br.edu.ifrn.eventos.dominio.Participante;
 import br.edu.ifrn.eventos.interfaces.ParticipanteMBRemote;
 
@@ -38,4 +39,5 @@ public class ParticipanteMB implements ParticipanteMBRemote {
 		
 	}
 
+	
 }

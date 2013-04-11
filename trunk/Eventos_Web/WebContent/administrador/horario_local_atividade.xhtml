@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/public/template.xhtml">
+	<ui:define name="conteudo">
+
+		<h:form>
+		<p:dataTable var="a" value="#{administradorMB.atividades}">
+			<p:column headerText="Título">
+				<h:outputText value="#{a.trabalho.titulo}" />
+			</p:column>
+			<p:column headerText="Horário Inicial">
+				<h:inputText value="#{a.horarioInicio}" />
+			</p:column>
+			<p:column headerText="Horário Final">
+				<h:inputText value="#{a.horarioFim}" />
+			</p:column>
+			<p:column headerText="Local">
+				<h:inputText value="#{a.local}" />
+			</p:column>
+			<p:column headerText="Horário Final">
+				<p:calendar value="#{a.data}" />
+			</p:column>
+		</p:dataTable>
+		<h:commandButton value="Salvar" action="#{administradorMB.salvar}"/>
+	</h:form>
+
+
+	</ui:define>
+</ui:composition>
+</html>

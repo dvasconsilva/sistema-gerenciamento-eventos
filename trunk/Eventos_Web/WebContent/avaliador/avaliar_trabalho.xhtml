@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -6,38 +6,48 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
-<ui:composition template="/index2.xhtml">
+<ui:composition template="/public/template.xhtml">
 	<ui:define name="conteudo">
-		
+
 		<fieldset>
-		    	<legend>Titulo</legend>
-			<h:outputText value="#{avaliadorMB.trabalho.titulo}"/>
-			</fieldset>
-			<fieldset>
-		    <legend>Descricao</legend>
-				<h:outputText escape="false" value="#{avaliadorMB.trabalho.descricao}"/>
-			</fieldset>
-			<br/>
-		
+			<legend>Titulo</legend>
+			<h:outputText value="#{avaliadorMB.trabalho.titulo}" />
+		</fieldset>
+		<fieldset>
+			<legend>Descricao</legend>
+			<h:outputText escape="false"
+				value="#{avaliadorMB.trabalho.descricao}" />
+		</fieldset>
+		<br />
+
 		<h:form id="form">
-		 	<h:inputHidden value="#{avaliadorMB.trabalho.id}"/>
-		 	<h:outputText value="Qual e o potencial para atrair o publico para o minicurso proposto?"/>
-		 	<p:rating value="#{avaliadorMB.rating}"/>   
-	        <p/><br/>
-	        <h:outputText value="Qual e o impacto social, economico ou ambiental do trabalho descrito?"/><br/>
-		 	<p:rating value="#{avaliadorMB.rating2}"/>
-		 	<p/><br/>
-		 	<h:outputText value="O assunto e do trabalho e novo? E acessivel??"/><br/>
-		 	<p:rating value="#{avaliadorMB.rating3}"/>
-		 	<p/><br/>
-		 	<h:outputText value="O assunto e novo? e acessivel?"/><br/>
-		 	<p:rating value="#{avaliadorMB.rating4}"/>
-		 	<p/><br/>
-		 	<h:commandButton action="#{avaliadorMB.salvar}" value="Avaliar"/>
-		 </h:form>		
-	
+			<h:inputHidden value="#{avaliadorMB.trabalho.id}" />
+			<h:outputText
+				value="Qual e o potencial para atrair o publico para o minicurso proposto?" />
+			<p:rating value="#{avaliadorMB.rating}" />
+			<p />
+			<br />
+			<h:outputText
+				value="Qual e o impacto social, economico ou ambiental do trabalho descrito?" />
+			<br />
+			<p:rating value="#{avaliadorMB.rating2}" />
+			<p />
+			<br />
+			<h:outputText value="O assunto e do trabalho e novo? E acessivel??" />
+			<br />
+			<p:rating value="#{avaliadorMB.rating3}" />
+			<p />
+			<br />
+			<h:outputText value="O assunto e novo? e acessivel?" />
+			<br />
+			<p:rating value="#{avaliadorMB.rating4}" />
+			<p />
+			<br />
+			<h:commandButton action="#{avaliadorMB.salvar}" value="Avaliar" />
+		</h:form>
+
 	</ui:define>
-	</ui:composition>
-	
-	
+</ui:composition>
+
+
 </html>

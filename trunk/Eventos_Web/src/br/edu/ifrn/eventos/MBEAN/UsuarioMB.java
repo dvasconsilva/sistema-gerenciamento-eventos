@@ -109,9 +109,8 @@ public class UsuarioMB {
 		HttpSession session = (HttpSession) fc.getExternalContext().getSession(
 				false);
 		session.invalidate();
-		System.out.println(UsuarioLogado());
 
-		return "/login.xhtml";
+		return "Eventos_Web2/protecao/login.xhtml";
 	}
 
 	
