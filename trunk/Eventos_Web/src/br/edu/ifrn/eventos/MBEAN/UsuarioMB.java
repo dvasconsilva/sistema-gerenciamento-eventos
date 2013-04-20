@@ -110,7 +110,7 @@ public class UsuarioMB {
 				false);
 		session.invalidate();
 
-		return "Eventos_Web2/protecao/login.xhtml";
+		return "../index.xhtml";
 	}
 
 	

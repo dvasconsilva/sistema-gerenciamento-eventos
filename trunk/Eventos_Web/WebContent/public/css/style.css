@@ -31,7 +31,7 @@ body {
 	
 }
 
-#top-gap{ height: 60px; }
+#top-gap{ height: 100px; }
 
 #logo{
 	position: absolute;
@@ -49,9 +49,11 @@ a{
 
 #side-content{
 	width: 800px;
-	float: left;
+	float: center;
+	margin-left: 30px;
 	margin-right: 20px;
 	min-height: 300px;
+	
 }
 
 /* WP IMG ALIGNMENT  --------------------------------------------------*/
@@ -594,7 +596,7 @@ h1,h2,h3,h4,h5,h6{
 }
 
 .headerimgs{
-	margin: auto, auto, auto, auto;
+	margin: auto, auto, auto, 0;
 	padding-left: -100px;
 	
 }

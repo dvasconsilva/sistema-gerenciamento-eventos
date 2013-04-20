@@ -6,70 +6,78 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
+	
+	
+
+<h:head>
+	<link rel="stylesheet" href="../public/css/style.css" type="text/css" />
+	<link rel="stylesheet" href="../public/css/social-icons.css" type="text/css"  />
+</h:head>
 
 <ui:composition template="/public/template.xhtml">
 	<ui:define name="conteudo">
-	
 		<h:form>
-			<p:growl id="messages" showDetail="true" autoUpdate="true" closable="true" />
-			<h:panelGrid columns="2">
-				<h:outputText value="Titulo: " />
-				<h:inputText value="#{palestranteMB.trabalho.titulo}"
-					required="true" />
-
-				<h:outputText value="Descrição: " />
-				<p:editor id="editor" value="#{palestranteMB.trabalho.descricao}" width="600"/>
-
-				<h:outputText value="Tipo Trabalho: " />
-				<h:selectOneMenu value="#{palestranteMB.tipoT.id}">
-					<f:selectItem itemValue="" itemLabel="Selecione..." />
-					<f:selectItems value="#{palestranteMB.tipoTrabalho}" />
-				</h:selectOneMenu>
-				
+			<p:growl id="messages" showDetail="true" autoUpdate="true"
+				closable="true" />
 			
-				<h:outputText value="Nome"/>
-				<h:inputText value="#{palestranteMB.usuario.nome}"/>
-				<h:outputText value="CPF"/>
-				<h:inputText value="#{palestranteMB.usuario.cpf}"/>
-				<h:outputText value="Email"/>
-				<h:inputText value="#{palestranteMB.usuario.email}"/>
-				
-		<h:commandButton action="#{palestranteMB.adicionarPalestrante}"
-			value="Adicionar" />
-				
-		<h:dataTable value="#{palestranteMB.listarPalestrantes}" var="p">
 			
-			 <h:column>
-			 	<f:facet name="header">
-					<h:outputText value="Nome" />
-				</f:facet>
- 				<h:outputText value="#{p.usuario.nome}"/>
- 			</h:column>
- 			<h:column>
- 				<f:facet name="header">
-					<h:outputText value="CPF" />
-				</f:facet>
- 				<h:outputText value="#{p.usuario.cpf}"/>
- 			</h:column>
- 			<h:column>
- 				<f:facet name="header">
-					<h:outputText value="Email" />
-				</f:facet>
- 				<h:outputText value="#{p.usuario.email}"/>
- 			</h:column>
- 			<h:column>
- 			<f:facet name="header">
-						<h:outputText value="Delete" />
-				</f:facet>
-					<h:commandLink id="delete" action="#{palestranteMB.remover(p)}"
-						value="Delete" />
-			</h:column>
-		</h:dataTable>
-				
-				<h:commandButton action="#{palestranteMB.submeterTrabalho}"
-					value="Salvar" />
-			</h:panelGrid>
+			<h:outputText value="Titulo: " />
+			<p:inputText value="#{palestranteMB.trabalho.titulo}" required="true" maxlength="80" size="100" />
+			<br/><br/>
+			<h:outputText value="Descrição: " />
+			<p:editor id="editor" value="#{palestranteMB.trabalho.descricao}"
+				width="600" required="true" />
+			
+			<br/>
+			<h:outputText value="Tipo Trabalho: " />
+			<p:selectOneMenu value="#{palestranteMB.tipoT.id}">
+				<f:selectItem itemValue="" itemLabel="Selecione..." />
+				<f:selectItems value="#{palestranteMB.tipoTrabalho}" />
+			</p:selectOneMenu>
+			<br/><br/>
+			<h:outputText value="Quantidade de Participantes: "/>
+			<h:inputText value="#{palestranteMB.trabalho.qtdParticipantes}"/>
+			<br/><br/>
+			<h:outputText value="Nome" />
+			<h:inputText value="#{palestranteMB.usuario.nome}" />
+			<h:outputText value="CPF" />
+			<p:inputMask mask="999.999.999-99"
+				value="#{palestranteMB.usuario.cpf}" />
+			<h:outputText value="Email" />
+			<h:inputText value="#{palestranteMB.usuario.email}" />
+
+			<h:commandButton action="#{palestranteMB.adicionarPalestrante}"
+				value="Adicionar"  icon="ui-icon-plus" />
+			<br/><br/>
+			<h:dataTable value="#{palestranteMB.listarPalestrantes}" var="p">
+
+				<h:column>
+					
+					<h:outputText value="#{p.usuario.nome}" />
+				</h:column>
+				<h:column>
+					
+					<h:outputText value="#{p.usuario.cpf}" />
+				</h:column>
+				<h:column>
+					
+					<h:outputText value="#{p.usuario.email}" />
+				</h:column>
+				<h:column>
+					
+					<h:commandButton id="delete" action="#{palestranteMB.remover(p)}"
+						 value="Deletar" />
+				</h:column>
+			</h:dataTable>
+			<br/>
+			<p align="right">
+			<p:commandButton action="#{palestranteMB.submeterTrabalho}"
+				value="Salvar"  icon="ui-icon-disk"/>
+			</p>
 		</h:form>
+		
 	</ui:define>
 </ui:composition>
+
+
 </html>

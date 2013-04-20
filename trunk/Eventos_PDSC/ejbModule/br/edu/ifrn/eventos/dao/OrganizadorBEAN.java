@@ -14,37 +14,41 @@ import br.edu.ifrn.eventos.interfaces.OrganizadorBEANRemote;
 
 /**
  * Session Bean implementation class OrganizadorBEAN
+ * 
  * @author ANDRIE
  */
 @Stateless
 @LocalBean
 public class OrganizadorBEAN implements OrganizadorBEANRemote {
 
-    @PersistenceContext
-    private EntityManager em;
-	
-    public OrganizadorBEAN() {
-        // TODO Auto-generated constructor stub
-    }
+	@PersistenceContext
+	private EntityManager em;
+
+	public OrganizadorBEAN() {
+
+	}
 
 	@Override
 	public List<Participante> getParticipantes(int id_Atividade) {
-		
-		return this.em.createQuery("select p from Participante p", Participante.class).getResultList();
+
+		return this.em.createQuery("select p from Participante p",
+				Participante.class).getResultList();
 	}
 
 	@Override
 	public void salvarPresenca(Participante participante) {
 		this.em.merge(participante);
-		
+
 	}
 
 	@Override
 	public Organizador buscarOrganizador(String email) {
-		Query query = this.em.createQuery("select o from Organizador o where o.usuario.username = :email ",
-				Organizador.class);
-				query.setParameter("email", email);
-				return (Organizador)query.getSingleResult();
+		Query query = this.em
+				.createQuery(
+						"select o from Organizador o where o.usuario.username = :email ",
+						Organizador.class);
+		query.setParameter("email", email);
+		return (Organizador) query.getSingleResult();
 	}
 
 	@Override
@@ -54,24 +58,31 @@ public class OrganizadorBEAN implements OrganizadorBEANRemote {
 
 	@Override
 	public List<Organizador> ListarOrganizador() {
-		return this.em
-				.createQuery("select o from Organizador o", Organizador.class)
-				.getResultList();
+		return this.em.createQuery("select o from Organizador o",
+				Organizador.class).getResultList();
 	}
 
 	@Override
 	public void excluirOrganizador(Organizador organizador) {
-		this.em.remove(em.getReference(Organizador.class, organizador.getId()));		
+		this.em.remove(em.getReference(Organizador.class, organizador.getId()));
 	}
 
 	@Override
 	public void alterar(Organizador organizador) {
-		this.em.merge(organizador);		
+		this.em.merge(organizador);
 	}
 
 	@Override
-	public void AlterarOrganizador(Organizador organizador) {
-		this.em.merge(organizador);		
+	public boolean verificarOrganizador(String cpf) {
+		try {
+			Query query = this.em.createQuery(
+					"select o from Organizador o where o.usuario.cpf = :cpf",
+					Organizador.class);
+			query.setParameter("cpf", cpf).getSingleResult();
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 }

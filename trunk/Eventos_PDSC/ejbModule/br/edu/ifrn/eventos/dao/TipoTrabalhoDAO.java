@@ -2,10 +2,10 @@ package br.edu.ifrn.eventos.dao;
 
 import java.util.List;
 
-
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
 import br.edu.ifrn.eventos.dominio.TipoTrabalho;
 import br.edu.ifrn.eventos.interfaces.TipoTrabalhoDAORemote;
 
@@ -13,6 +13,7 @@ import br.edu.ifrn.eventos.interfaces.TipoTrabalhoDAORemote;
 public class TipoTrabalhoDAO implements TipoTrabalhoDAORemote{
 	@PersistenceContext
 	private EntityManager em;
+	
 	
 	@Override
 	public void CadastrarTipoTrabalho(TipoTrabalho tipoTrabalho){
@@ -29,6 +30,14 @@ public class TipoTrabalhoDAO implements TipoTrabalhoDAORemote{
 	public void excluirTipoTrabalho(TipoTrabalho tipoTrabalho) {
 		this.em.remove(em.getReference(TipoTrabalho.class,
 				tipoTrabalho.getId()));
+		
+	}
+
+	@Override
+	public void atualizar(TipoTrabalho tipoTrabalho) {
+		
+		System.out.println(tipoTrabalho.getTrabalhoTipo());
+		this.em.merge(tipoTrabalho);
 		
 	}
 

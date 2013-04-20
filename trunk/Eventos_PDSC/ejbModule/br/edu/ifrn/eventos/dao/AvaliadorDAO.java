@@ -12,6 +12,7 @@ import javax.persistence.TypedQuery;
 
 import br.edu.ifrn.eventos.dominio.AvaliacaoTrabalho;
 import br.edu.ifrn.eventos.dominio.Avaliador;
+import br.edu.ifrn.eventos.dominio.Organizador;
 import br.edu.ifrn.eventos.dominio.TrabalhoSubmetido;
 import br.edu.ifrn.eventos.interfaces.AvaliadorDAORemote;
 
@@ -40,7 +41,7 @@ public class AvaliadorDAO implements AvaliadorDAORemote {
 
 	@Override
 	public TrabalhoSubmetido avaliarTrabalho(int id) {
-		System.out.println(id + " ===========================");
+		
 		Query query = em.createQuery(
 				"select t from TrabalhoSubmetido t where t.id =:id",
 				TrabalhoSubmetido.class);
@@ -72,9 +73,6 @@ public class AvaliadorDAO implements AvaliadorDAORemote {
 	@Override
 	public void salvarAvaliacao(AvaliacaoTrabalho avaliacao, Avaliador avaliador) {
 		
-		System.out.println(avaliador.getUsuario().getNome());
-		
-		System.out.println(avaliacao.getTrabalho().getTitulo());
 		avaliacao = this.em.merge(avaliacao);
 		listAvaliador.add(avaliacao);
 		avaliador.setAvaliacaoTrabalho(listAvaliador);
@@ -117,6 +115,19 @@ public class AvaliadorDAO implements AvaliadorDAORemote {
 	public void AlterarAvaliador(Avaliador avaliador) {
 		this.em.merge(avaliador);
 		
+	}
+
+	@Override
+	public boolean verificarAvaliador(String cpf) {
+		try {
+			Query query = this.em.createQuery(
+					"select a from Avaliador o where a.usuario.cpf = :cpf",
+					Avaliador.class);
+			query.setParameter("cpf", cpf).getSingleResult();
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 }

@@ -11,10 +11,6 @@
 	<ui:define name="conteudo">
 
 		<h:form>
-			<h:commandLink value="sair" action="#{usuarioMB.logout}" ajax="false" />
-		</h:form>
-
-		<h:form>
 			<p:dataTable value="#{palestranteMB.statusTrabalho}" var="s"
 				emptyMessage="Nenhum Trabalho submetido">
 				<p:column headerText="Titulo">

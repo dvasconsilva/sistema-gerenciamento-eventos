@@ -15,7 +15,6 @@ import javax.mail.MessagingException;
 import org.primefaces.component.tabview.TabView;
 import org.primefaces.event.TabChangeEvent;
 
-
 import br.edu.ifrn.eventos.dominio.AvaliacaoTrabalho;
 import br.edu.ifrn.eventos.dominio.Avaliador;
 import br.edu.ifrn.eventos.dominio.TipoTrabalho;
@@ -36,21 +35,21 @@ public class AvaliadorMB {
 
 	@EJB
 	private AvaliadorDAORemote avaliadorBean;
-	
+
 	@EJB
 	private CadastroUsuarioRemote usuarioMB;
-	
+
 	@EJB
 	private UsuarioDAORemote usuarioBEAN;
-	
+
 	@EJB
 	private PermissaoPapelDAORemote permissaoBEAN;
-	
+
 	@EJB
 	private TipoTrabalhoDAORemote tipoTrabalhoBEAN;
-	
+
 	private Integer rating, rating2, rating3, rating4;
-	
+
 	private UsuarioMB uMB = new UsuarioMB();
 	private TrabalhoSubmetido trabalho = new TrabalhoSubmetido();
 	private AvaliacaoTrabalho avaliacao = new AvaliacaoTrabalho();
@@ -72,24 +71,29 @@ public class AvaliadorMB {
 	public String salvar() {
 		avaliacao = this.avaliadorBean.buscaAvaliacao(trabalho);
 
-		this.avaliacao.setNotaFinal(avaliacao.getNotaFinal() + calcularMedia()); // insere a media
+		this.avaliacao.setNotaFinal(avaliacao.getNotaFinal() + calcularMedia()); // insere
+																					// a
+																					// media
 		avaliador = this.avaliadorBean.buscarAvaliador(uMB.UsuarioLogado());
-		
+
 		this.avaliadorBean.salvarAvaliacao(avaliacao, avaliador);
-		
-		new Mensagens().sucesso(FacesContext.getCurrentInstance(), "Trabalhos Avaliado com sucesso");
+
+		new Mensagens().sucesso(FacesContext.getCurrentInstance(),
+				"Trabalhos Avaliado com sucesso");
 		return "/avaliador/listar_trabalhos.xhtml";
 	}
 
 	public Double calcularMedia() {
-		System.out.println(String.valueOf(((rating + rating2 + rating3 + rating4) / 4)));
+		System.out.println(String
+				.valueOf(((rating + rating2 + rating3 + rating4) / 4)));
 		System.out.println(((rating + rating2 + rating3 + rating4) / 4));
-		
-		return Double.parseDouble(String.valueOf(((rating + rating2 + rating3 + rating4) / 4)));
+
+		return Double.parseDouble(String
+				.valueOf(((rating + rating2 + rating3 + rating4) / 4)));
 	}
 
 	// crud avaliador
-	//retorna os avaliadores cadastrados
+	// retorna os avaliadores cadastrados
 	public List<Avaliador> getListarAvaliadores() throws IOException {
 		return this.avaliadorBean.ListarAvaliador();
 	}
@@ -99,35 +103,43 @@ public class AvaliadorMB {
 				+ avaliador.getUsuario().getNome());
 		this.avaliadorBean.excluirAvaliador(avaliador);
 
-		//try {
-			//this.buscar();
-		//} catch (IOException exception) {
-		//	exception.printStackTrace();
-		//}
+		// try {
+		// this.buscar();
+		// } catch (IOException exception) {
+		// exception.printStackTrace();
+		// }
 	}
 
-	public void cadastrarAvaliador() throws MessagingException, UnsupportedEncodingException {
-		Usuario verificarUsuario = this.usuarioBEAN.buscarUsuario(usuario.getCpf());
-		
-		if(verificarUsuario == null){
-			usuario.setSenha("eventos");
-			Usuario u  = this.usuarioMB.CadastrarUsuario(usuario);
-			Papel papel = this.permissaoBEAN.buscarPapel("Role_Avaliador");
-			this.permissaoBEAN.adicionarPermissao(u, papel);
-			
-			avaliador.setUsuario(u);
-			this.avaliadorBean.CadastrarAvaliador(avaliador);
-		}else{
-			Papel papel = this.permissaoBEAN.buscarPapel("Role_Avaliador");
-			this.permissaoBEAN.adicionarPermissao(verificarUsuario, papel);
-			
-			avaliador.setUsuario(verificarUsuario);
-			this.avaliadorBean.CadastrarAvaliador(avaliador);
+	public void cadastrarAvaliador() throws MessagingException,
+			UnsupportedEncodingException {
+
+		if (!this.avaliadorBean.verificarAvaliador(usuario.getCpf())) {
+
+			Usuario verificarUsuario = this.usuarioBEAN.buscarUsuario(usuario
+					.getCpf());
+
+			if (verificarUsuario == null) {
+				usuario.setSenha("eventos");
+				Usuario u = this.usuarioMB.CadastrarUsuario(usuario);
+				Papel papel = this.permissaoBEAN.buscarPapel("Role_Avaliador");
+				this.permissaoBEAN.adicionarPermissao(u, papel);
+
+				avaliador.setUsuario(u);
+				this.avaliadorBean.CadastrarAvaliador(avaliador);
+			} else {
+				Papel papel = this.permissaoBEAN.buscarPapel("Role_Avaliador");
+				this.permissaoBEAN.adicionarPermissao(verificarUsuario, papel);
+
+				avaliador.setUsuario(verificarUsuario);
+				this.avaliadorBean.CadastrarAvaliador(avaliador);
+			}
+		} else {
+			new Mensagens().erro(FacesContext.getCurrentInstance(), "Este Avaliador Já está Cadastrado");
 		}
 	}
 
-	
-	public String update() throws UnsupportedEncodingException, MessagingException{
+	public String update() throws UnsupportedEncodingException,
+			MessagingException {
 		usuario = this.usuarioMB.AlterarUsuario(usuario);
 		avaliador.setUsuario(usuario);
 		this.avaliadorBean.AlterarAvaliador(avaliador);
@@ -135,22 +147,23 @@ public class AvaliadorMB {
 		avaliador = new Avaliador();
 		return "/Listar_Avaliador.xhtml";
 	}
-	
-	public void onTabChange(TabChangeEvent event) {  
+
+	public void onTabChange(TabChangeEvent event) {
 		TabView tv = (TabView) event.getComponent();
-        this.index = tv.getActiveIndex();
-		
-    }  
-	
-	public List<TipoTrabalho> getTipoTrabalho(){
+		this.index = tv.getActiveIndex();
+
+	}
+
+	public List<TipoTrabalho> getTipoTrabalho() {
 		return this.tipoTrabalhoBEAN.listarTipoTrabalhos();
 	}
-	
-	public String atualizar(Avaliador avaliador){
+
+	public String atualizar(Avaliador avaliador) {
 		this.usuario = avaliador.getUsuario();
 		this.avaliador = avaliador;
 		return "editar_avaliador.xhtml";
 	}
+
 	public TrabalhoSubmetido getTrabalho() {
 		return trabalho;
 	}
@@ -223,5 +236,4 @@ public class AvaliadorMB {
 		this.index = index;
 	}
 
-	
 }

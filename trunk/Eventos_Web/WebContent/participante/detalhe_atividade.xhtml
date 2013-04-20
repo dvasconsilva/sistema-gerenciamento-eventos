@@ -14,20 +14,16 @@
 		<h:outputText value="#{p.usuario.nome}"/>
  	</h:dataTable>
 		<h:form>
-			<fieldset>
-				<legend>Título</legend>
-				<h:outputText value="#{participanteMB.atividade.trabalho.titulo}" />
-			</fieldset>
-			<fieldset>
-				<legend>Descrição</legend>
-				<h:outputText escape="false"
+			<p:fieldset legend="#{participanteMB.atividade.trabalho.titulo}">
+				
+					
+					<h:outputText escape="false"
 					value="#{participanteMB.atividade.trabalho.descricao}" />
-			</fieldset>
-			<fieldset>
-				<legend></legend>
-				<h:outputText
+				
+					<h:outputText
 					value="#{participanteMB.atividade.trabalho.qtdParticipantes}" />
-			</fieldset>
+				
+			</p:fieldset>
 			
 
 			<h:commandLink id="delete"

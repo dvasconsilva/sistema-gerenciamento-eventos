@@ -30,9 +30,24 @@ public class Evento implements Serializable{
 	private boolean gratuito;
 	private int valor;
 	@Temporal(TemporalType.DATE)
-	private Date dataInicial;
+	private Date dataInicialSubmissao;
 	@Temporal(TemporalType.DATE)
-	private Date dataFinal;
+	private Date dataFinalSubmissao;
+	@Temporal(TemporalType.DATE)
+	private Date dataInicialAvaliacao;
+	@Temporal(TemporalType.DATE)
+	private Date dataFinalAvaliacao;
+	@Temporal(TemporalType.DATE)
+	private Date dataAprovacaoTrabalho;
+	@Temporal(TemporalType.DATE)
+	private Date dataInicialInscricao;
+	@Temporal(TemporalType.DATE)
+	private Date dataFinalInscricao;
+	
+	@Temporal(TemporalType.DATE)
+	private Date dataInicialEvento;
+	@Temporal(TemporalType.DATE)
+	private Date dataFinalEvento;
 	
 	@OneToMany(cascade =CascadeType.ALL, mappedBy = "evento")
 	private List<PeriodoInscricao> periodoInscricao;
@@ -81,21 +96,84 @@ public class Evento implements Serializable{
 	}
 
 	
-	
-	public Date getDataInicial() {
-		return dataInicial;
+	public Date getDataInicialSubmissao() {
+		return dataInicialSubmissao;
 	}
 
-	public void setDataInicial(Date dataInicial) {
-		this.dataInicial = dataInicial;
+	public void setDataInicialSubmissao(Date dataInicialSubmissao) {
+		this.dataInicialSubmissao = dataInicialSubmissao;
 	}
 
-	public Date getDataFinal() {
-		return dataFinal;
+	public Date getDataFinalSubmissao() {
+		return dataFinalSubmissao;
 	}
 
-	public void setDataFinal(Date dataFinal) {
-		this.dataFinal = dataFinal;
+	public void setDataFinalSubmissao(Date dataFinalSubmissao) {
+		this.dataFinalSubmissao = dataFinalSubmissao;
+	}
+
+	public Date getDataInicialAvaliacao() {
+		return dataInicialAvaliacao;
+	}
+
+	public void setDataInicialAvaliacao(Date dataInicialAvaliacao) {
+		this.dataInicialAvaliacao = dataInicialAvaliacao;
+	}
+
+	public Date getDataFinalAvaliacao() {
+		return dataFinalAvaliacao;
+	}
+
+	public void setDataFinalAvaliacao(Date dataFinalAvaliacao) {
+		this.dataFinalAvaliacao = dataFinalAvaliacao;
+	}
+
+	public Date getDataAprovacaoTrabalho() {
+		return dataAprovacaoTrabalho;
+	}
+
+	public void setDataAprovacaoTrabalho(Date dataAprovacaoTrabalho) {
+		this.dataAprovacaoTrabalho = dataAprovacaoTrabalho;
+	}
+
+	public Date getDataInicialInscricao() {
+		return dataInicialInscricao;
+	}
+
+	public void setDataInicialInscricao(Date dataInicialInscricao) {
+		this.dataInicialInscricao = dataInicialInscricao;
+	}
+
+	public Date getDataFinalInscricao() {
+		return dataFinalInscricao;
+	}
+
+	public void setDataFinalInscricao(Date dataFinalInscricao) {
+		this.dataFinalInscricao = dataFinalInscricao;
+	}
+
+	public Date getDataInicialEvento() {
+		return dataInicialEvento;
+	}
+
+	public void setDataInicialEvento(Date dataInicialEvento) {
+		this.dataInicialEvento = dataInicialEvento;
+	}
+
+	public Date getDataFinalEvento() {
+		return dataFinalEvento;
+	}
+
+	public void setDataFinalEvento(Date dataFinalEvento) {
+		this.dataFinalEvento = dataFinalEvento;
+	}
+
+	public List<Participante> getParticipantes() {
+		return participantes;
+	}
+
+	public void setParticipantes(List<Participante> participantes) {
+		this.participantes = participantes;
 	}
 
 	public List<PeriodoInscricao> getPeriodoInscricao() {
@@ -150,6 +228,4 @@ public class Evento implements Serializable{
 		return true;
 	}
 	
-	
-
 }

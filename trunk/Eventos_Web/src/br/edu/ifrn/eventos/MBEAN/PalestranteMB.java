@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -33,157 +34,137 @@ public class PalestranteMB {
 
 	@EJB
 	private PalestranteDAORemote palestranteDAO;
-	
+
 	@EJB
 	private UsuarioDAORemote usuarioDAO;
-	
+
 	@EJB
 	private CadastroUsuarioRemote cadastroUsuarioDAO;
 
 	@EJB
 	private PermissaoPapelDAORemote permissaoBEAN;
-	
+
 	private TrabalhoSubmetido trabalho = new TrabalhoSubmetido();
 	private TrabalhoSubmetido trabalho2 = new TrabalhoSubmetido();
 	private AvaliacaoTrabalho avaliacao = new AvaliacaoTrabalho();
 	private TipoTrabalho tipoT = new TipoTrabalho();
 	private Usuario usuario = new Usuario();
-	private Palestrante palestrante = new Palestrante();
+	private Usuario usuarioLogado = new Usuario();
+	private Palestrante palestrante = null;
 	private List<Palestrante> listaPalestrantes = new ArrayList<Palestrante>();
-	
 
-	
+	public PalestranteMB() {
+		palestrante = new Palestrante();
+	}
+
 	@PostConstruct
-	public void inserirUsuarioListaPalestrante(){
-	System.out.println("---------------------" +new UsuarioMB().UsuarioLogado());
-	Usuario usuarioLogado = this.usuarioDAO.buscarUsuarioEmail(new UsuarioMB().UsuarioLogado());	
-	Papel papel = buscarPapel();
-	
-	//verifica se o usuario ja tem permissao
-	if(!varificarPermissaoUsuario(usuarioLogado, papel)){
-		System.out.println("aqui " + papel.getNomePapel() + " " + usuarioLogado.getNome());
-		
-		this.permissaoBEAN.adicionarPermissao(usuarioLogado, papel);
+	public void inserirUsuarioListaPalestrante() {
+
+		usuarioLogado = this.usuarioDAO.buscarUsuarioEmail(new UsuarioMB()
+				.UsuarioLogado());
+
+		palestrante.setUsuario(usuarioLogado);
+		this.palestranteDAO.adicionaPalestrantes(palestrante);
+
 	}
-	
-	System.out.println(varificarPermissaoUsuario(usuarioLogado, papel));
-	
-	palestrante.setUsuario(usuarioLogado);
-	
-	this.palestranteDAO.adicionaPalestrantes(palestrante);
-	//palestrantes(palestrante);
+
+	@PreDestroy
+	public void limparLista() {
+		this.palestranteDAO.limparLista();
 	}
-	
-	public void submeterTrabalho() {
+
+	public String submeterTrabalho() {
+
 		trabalho.setTipoTrabalho(palestranteDAO.listarTipo(tipoT.getId()));
-		trabalho.setPalestrante(listaPalestrantes);
 		trabalho.setStatus(StatusTrabalhoEnum.AGUARDANDO);
 		trabalho2 = palestranteDAO.submeterTrabalho(trabalho);
 		avaliacao.setTrabalho(trabalho2);
 		this.palestranteDAO.cadastrarAvaliacao(avaliacao);
 		associarTrabalhoPalestrante();
 		trabalho = new TrabalhoSubmetido();
-		
-		new Mensagens().sucesso(FacesContext.getCurrentInstance(), "Trabalho submetido com Sucesso");
-		
+
+		new Mensagens().sucesso(FacesContext.getCurrentInstance(),
+				"Trabalho submetido com Sucesso");
+
+		return "../index.xhtml";
 	}
 
-	//Adiciona palestrantes ao trabalho
-	
-	public void adicionarPalestrante() throws UnsupportedEncodingException, MessagingException{
-		Usuario addUsuario = this.usuarioDAO.buscarUsuario(usuario.getCpf());
-		
-		//limita a quantidade de palestrantes para 2
-		if(listaPalestrantes.size() < 2){
-			if(addUsuario != null){
+	// Adiciona palestrantes ao trabalho
+
+	public void adicionarPalestrante() throws UnsupportedEncodingException,
+			MessagingException {
+
+		if (this.palestranteDAO.getPalestrantes().size() < 2) {
+			Usuario addUsuario = this.usuarioDAO.buscarUsuario(usuario.getCpf());
+			
+			
+			if (!usuarioLogado.getCpf().equals(usuario.getCpf())) 
+			{
 				
-				Papel papel = buscarPapel();
-				
-				if(!varificarPermissaoUsuario(addUsuario, papel)){
-					adicionarPermissao(addUsuario, papel);
-				}
-				
-				palestrante.setUsuario(addUsuario);
-				this.palestranteDAO.adicionaPalestrantes(palestrante); //Associa ao trabalhoa a submeter
-				//palestrantes(palestrante);
-				
-			}else
-				if(addUsuario == null){
-					Usuario usuarioNaoCadastrado = new Usuario(usuario.getCpf(), 
-						usuario.getNome(), usuario.getEmail(), "eventos", false);
-				
-					usuarioNaoCadastrado = this.cadastroUsuarioDAO.CadastrarUsuario(usuarioNaoCadastrado);
-					Papel papel = buscarPapel();
-					adicionarPermissao(usuarioNaoCadastrado, papel);
-					
-					palestrante.setUsuario(usuarioNaoCadastrado);
-					//palestrantes(palestrante);
+				if (addUsuario != null) {
+
+					palestrante.setUsuario(addUsuario);
 					this.palestranteDAO.adicionaPalestrantes(palestrante);
+
+				} else if (addUsuario == null) {
 					
-				}	
-		}else
-			new Mensagens().erro(FacesContext.getCurrentInstance(), "O numero maximo de palestrantes e 2");
+					Usuario usuarioNaoCadastrado = new Usuario(
+							usuario.getCpf(), usuario.getNome(),
+							usuario.getEmail(), "eventos", false);
+
+					usuarioNaoCadastrado = this.cadastroUsuarioDAO
+							.CadastrarUsuario(usuarioNaoCadastrado);
+
+					palestrante.setUsuario(usuarioNaoCadastrado);
+					this.palestranteDAO.adicionaPalestrantes(palestrante);
+
+				}
+			}else{
+				new Mensagens().erro(FacesContext.getCurrentInstance(),
+						"Este Palestrante já foi adicionado");
+			}
+		} else
+			new Mensagens().erro(FacesContext.getCurrentInstance(),
+					"Quantidade máxima de palestrantes é 2");
+
 	}
-	
-	//remove palestrante da lista
-	public void remover(Palestrante palestrante){
-		if(palestrante.getUsuario().getEmail() == new UsuarioMB().UsuarioLogado()){
-			new Mensagens().erro(FacesContext.getCurrentInstance(), "Este Palestrante nao pode ser removido");
-		}else{
-		if(!usuarioDAO.verificarUsuarioPalestrante("")){
-			
-			//verifica se o usuario foi cadastrado ou foi adicionado
-			Usuario verificarUsuario = usuarioDAO.usuarioCadastrado("");
-			
-			//se foi adicionado, ent�o remove dos usuarios do sistema
-			if(verificarUsuario != null){
-				this.usuarioDAO.removerCPF(verificarUsuario.getCpf());
-				removerPalestrante(palestrante);
-			}else
-				removerPalestrante(palestrante);
-		}
-		}
+
+	// remove palestrante da lista
+	public void remover(Palestrante palestrante) {
+		if (palestrante.getUsuario().getEmail() == usuarioLogado.getEmail()) {
+			new Mensagens().erro(FacesContext.getCurrentInstance(),
+					"Este palestrante n�o pode ser removido");
+		} else
+			this.palestranteDAO.removePalestrante(palestrante);
 	}
-	
-	public Papel buscarPapel(){
+
+	public Papel buscarPapel() {
 		return this.permissaoBEAN.buscarPapel("Role_Palestrante");
 	}
-	
-	public void adicionarPermissao(Usuario addUsuario, Papel papel){
+
+	public void adicionarPermissao(Usuario addUsuario, Papel papel) {
 		this.permissaoBEAN.adicionarPermissao(addUsuario, papel);
 	}
-	
-	public boolean varificarPermissaoUsuario(Usuario usuario, Papel papel){
-		Permissao p = this.permissaoBEAN.verificarPermissaoUsuario(usuario, papel);
-		
-		if(p != null){
-			System.out.println(p.getId() + "  " + p.getUsuario().getNome() + " " + p.getPapel().getNomePapel());
-			return true;
-		}else
-			return false;
-	}
-	//lista palestrantes
-	public List<Palestrante>getListarPalestrantes(){
+
+	// lista palestrantes
+	public List<Palestrante> getListarPalestrantes() {
 		listaPalestrantes = this.palestranteDAO.getPalestrantes();
 		return listaPalestrantes;
 	}
-	
-	public void palestrantes(Palestrante palestrante){
-		
-		listaPalestrantes.add(palestrante);
-	}
-	
-	public void removerPalestrante(Palestrante palestrante){
-		listaPalestrantes.remove(palestrante);
-	}
-	
-	//busca usuario 
-	public void associarTrabalhoPalestrante(){
-		//listaPalestrantes = this.palestranteDAO.ListarPalestrantes();
-		
+
+	// busca usuario
+	public void associarTrabalhoPalestrante() {
 		for (Palestrante p : listaPalestrantes) {
 			p.setTrabalho(trabalho2);
+
+			if (!this.permissaoBEAN.verificarPermissaoUsuario(p.getUsuario(),
+					buscarPapel())) {
+				this.permissaoBEAN.adicionarPermissao(p.getUsuario(),
+						buscarPapel());
+			}
+
 			this.palestranteDAO.updatePalestrante(p);
+			System.out.println("ppppppppppppppppppppppppp");
 		}
 	}
 
@@ -198,11 +179,12 @@ public class PalestranteMB {
 		return itens;
 	}
 
-	//lista trabalhos submetidos exibindo seu status
-	public List<TrabalhoSubmetido> getStatusTrabalho(){
-		return this.palestranteDAO.statusTrabalhos(new UsuarioMB().UsuarioLogado());
+	// lista trabalhos submetidos exibindo seu status
+	public List<TrabalhoSubmetido> getStatusTrabalho() {
+		return this.palestranteDAO.statusTrabalhos(new UsuarioMB()
+				.UsuarioLogado());
 	}
-	
+
 	public TipoTrabalho getTipoT() {
 		return tipoT;
 	}
@@ -225,6 +207,10 @@ public class PalestranteMB {
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+
+	public Usuario getUsuarioLogado() {
+		return usuarioLogado;
 	}
 
 }

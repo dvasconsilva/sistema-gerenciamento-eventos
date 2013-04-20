@@ -22,4 +22,5 @@ public interface AvaliadorDAORemote {
 	public List<Avaliador> ListarUltimos();
 	public void alterar(Avaliador avaliador);
 	void AlterarAvaliador(Avaliador avaliador);
+	public boolean verificarAvaliador(String cpf);
 }
