@@ -4,14 +4,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.mail.MessagingException;
+
+import org.primefaces.event.RowEditEvent;
+
 import br.edu.ifrn.eventos.dominio.TipoTrabalho;
 import br.edu.ifrn.eventos.interfaces.TipoTrabalhoDAORemote;
+import br.ifrn.eventos.util.Mensagens;
 
 @ManagedBean
 @SessionScoped
@@ -19,45 +24,20 @@ public class TipoTrabalhoMB {
 	@EJB
 	private TipoTrabalhoDAORemote tipoTrabalhoRemote;
 	
-
 	private TipoTrabalho tipotrabalho = new TipoTrabalho();
-	private List<TipoTrabalho> tipostrabalhos = new ArrayList<TipoTrabalho>();
-
-	public TipoTrabalho getTipotrabalho() {
-		return tipotrabalho;
-	}
-
-	public void setTipotrabalho(TipoTrabalho tipotrabalho) {
-		this.tipotrabalho = tipotrabalho;
-	}
-
-	public List<TipoTrabalho> getTipostrabalhos() {
-		this.tipostrabalhos = this.tipoTrabalhoRemote.listarTipoTrabalhos();
-		return tipostrabalhos;
-	}
-
-	public void setTipostrabalhos(List<TipoTrabalho> tipostrabalhos) {
-		this.tipostrabalhos = tipostrabalhos;
-	}
-
+	private List<TipoTrabalho> arrayTipoTrabalho = new ArrayList<TipoTrabalho>();
 	
-	public TipoTrabalhoMB() {
-		
+
+	@PostConstruct
+	public void listarTrabalhos(){
+		arrayTipoTrabalho = this.tipoTrabalhoRemote.listarTipoTrabalhos();
 	}
 
-	public void buscar() throws IOException {
-			this.tipostrabalhos = this.tipoTrabalhoRemote.listarTipoTrabalhos();
-	}
+
 	public void excluirTiposTrabalhos(TipoTrabalho tipoTrabalho) {
 		this.tipoTrabalhoRemote.excluirTipoTrabalho(tipoTrabalho);
 
-		try {
-			this.buscar();
-		} catch (IOException exception) {
-			FacesContext contex = FacesContext.getCurrentInstance();
-			contex.addMessage(null, new FacesMessage(FacesMessage.FACES_MESSAGES,"Tipo de trabalho nao pode ser excluído"));
-			exception.printStackTrace();
-		}
+		
 	}
 	public void cadastrarTipoTrabalho() throws MessagingException {
 		this.tipoTrabalhoRemote.CadastrarTipoTrabalho(tipotrabalho);
@@ -67,14 +47,36 @@ public class TipoTrabalhoMB {
 		contex.addMessage(null, new FacesMessage(FacesMessage.FACES_MESSAGES,"Avaliador Cadastrado com Sucesso"));
 	}
 	
-	public String update(){
-		this.tipoTrabalhoRemote.CadastrarTipoTrabalho(tipotrabalho);
-		tipotrabalho = new TipoTrabalho();
-		return "/Listar_tipotrabalho.xhtml";
-	}
-	
+
 	public String atualizar(TipoTrabalho u){
 		this.tipotrabalho = u;
 		return "editar_tipotrabalho.xhtml";
+	}
+	
+	public void onEdit(RowEditEvent event) {
+		this.tipoTrabalhoRemote.atualizar(((TipoTrabalho) event.getObject()));
+        System.out.println(">>>>>>>>>>>>>>>>>> " + ((TipoTrabalho) event.getObject()).getId());  
+    }  
+      
+    public void onCancel(RowEditEvent event) {  
+        System.out.println("<<<<<<<<<<<<<<<<<<<< Cancelado");
+    }  
+    
+    public TipoTrabalho getTipotrabalho() {
+		return tipotrabalho;
+	}
+
+	public void setTipotrabalho(TipoTrabalho tipotrabalho) {
+		this.tipotrabalho = tipotrabalho;
+	}
+
+
+	public List<TipoTrabalho> getArrayTipoTrabalho() {
+		return arrayTipoTrabalho;
+	}
+
+
+	public void setArrayTipoTrabalho(List<TipoTrabalho> arrayTipoTrabalho) {
+		this.arrayTipoTrabalho = arrayTipoTrabalho;
 	}
 }

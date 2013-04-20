@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
+import javax.ejb.Schedule;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -34,6 +35,7 @@ public class AdministradorMB {
 	private AtividadeDAORemote atividadeBean;
 	
 	private List<Atividade> atividades = new ArrayList<Atividade>();
+	
 	
 	public void getTrabalhos() {
 		atividades = this.atividadeBean.getAtividades();

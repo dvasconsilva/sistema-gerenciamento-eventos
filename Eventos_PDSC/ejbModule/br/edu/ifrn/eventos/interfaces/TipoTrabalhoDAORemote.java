@@ -12,4 +12,5 @@ public interface TipoTrabalhoDAORemote {
 	public void CadastrarTipoTrabalho(TipoTrabalho tipoTrabalho);
 	public List<TipoTrabalho> listarTipoTrabalhos();
 	public void excluirTipoTrabalho(TipoTrabalho tipoTrabalho);
+	public void atualizar(TipoTrabalho tipoTrabalho);
 	}

@@ -9,21 +9,37 @@
 
 <ui:composition template="/public/template.xhtml">
 	<ui:define name="conteudo">
-		<h:form>
-			<h:dataTable value="#{participanteMB.listarAtividades}" var="a">
-				<p:growl id="messages" showDetail="true" autoUpdate="true"
-					closable="true" />
-				<h:column>
-					<f:facet name="header">
-						<h:outputText value="Trabalho" />
-					</f:facet>
-					<h:outputText value="#{a.trabalho.titulo}" />
-					<h:commandLink id="delete"
-						action="#{participanteMB.detalhesAtividade(a)}"
-						value="Ver Detalhes" />
-				</h:column>
-			</h:dataTable>
+
+	<h:form id="form">
+			<p:messages id="messages" showDetail="true" autoUpdate="true"
+				closable="true" />
+			<p:tabView id="TabView" dynamic="true" var="t" cache="true"
+				value="#{participanteMB.tipoTrabalho}">
+
+				<p:ajax event="tabChange" listener="#{participanteMB.onTabChange}" />
+
+
+				<p:tab id="id" title="#{t.trabalhoTipo}">
+					<h:panelGrid columns="2" cellpadding="10" cellspacing="10">
+						<h:dataTable value="#{participanteMB.listarAtividades}" var="a">
+
+							<h:column>
+
+								<h:outputText value="#{a.trabalho.titulo}" />
+							</h:column>
+							<h:column>
+
+								<h:commandLink id="delete"
+									action="#{participanteMB.detalhesAtividade(a)}" value="Inscrever-se" />
+							</h:column>
+						</h:dataTable>
+
+					</h:panelGrid>
+				</p:tab>
+			</p:tabView>
 		</h:form>
+
+
 	</ui:define>
 </ui:composition>
 </html>

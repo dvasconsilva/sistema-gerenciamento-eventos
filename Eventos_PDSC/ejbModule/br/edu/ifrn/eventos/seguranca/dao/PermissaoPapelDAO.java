@@ -22,7 +22,7 @@ public class PermissaoPapelDAO implements PermissaoPapelDAORemote {
 
 	@PersistenceContext
 	private EntityManager em;
-	
+
 	public PermissaoPapelDAO() {
 		// TODO Auto-generated constructor stub
 	}
@@ -33,7 +33,7 @@ public class PermissaoPapelDAO implements PermissaoPapelDAORemote {
 		p.setUsuario(usuario);
 		p.setPapel(papel);
 		em.persist(p);
-		
+
 		p = null;
 
 	}
@@ -47,21 +47,22 @@ public class PermissaoPapelDAO implements PermissaoPapelDAORemote {
 		return (Papel) query.getSingleResult();
 
 	}
-	
+
 	@Override
-	public Permissao verificarPermissaoUsuario(Usuario usuario, Papel papel) {
+	public boolean verificarPermissaoUsuario(Usuario usuario, Papel papel) {
 		try{
-			
-			Query query = this.em.createQuery("select p from Permissao p where p.usuario.id = :id_usuario and " +
-					"p.papel.id = :id_papel", Usuario.class);
-			
-			query.setParameter("id_usuario", usuario.getId());
-			query.setParameter("id_papel", papel.getId());
-			
-			return (Permissao)query.getSingleResult();
+				Query query = this.em.createNativeQuery("select p.id, p.id_papel, p.id_usuario"
+				+" from usuario u, permissao p, papel pa "
+				+ "where u.username = :email and p.id_usuario = u.id "
+				+ "and p.id_papel = pa.id and pa.id = :id_papel", Permissao.class);
+
+				query.setParameter("email", usuario.getEmail())
+				.setParameter("id_papel", papel.getId()).getSingleResult();
+		return true;
+		
 		}catch (Exception e){
-			return null;
+			System.out.println("Ocorreu um erro :D");
+			return false;
 		}
 	}
-
 }

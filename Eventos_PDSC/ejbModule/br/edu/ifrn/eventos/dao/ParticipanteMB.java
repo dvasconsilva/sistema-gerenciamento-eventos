@@ -34,7 +34,7 @@ public class ParticipanteMB implements ParticipanteMBRemote {
 
 	@Override
 	public void adicionarAtividade(Participante participante) {
-		System.out.println(participante.getAtividade());
+		
 		this.em.merge(participante);
 		
 	}

@@ -19,6 +19,5 @@ public interface OrganizadorBEANRemote {
 	public void excluirOrganizador(Organizador organizador);
 	
 	public void alterar(Organizador organizador);
-	void AlterarOrganizador(Organizador organizador);
-	
+	public boolean verificarOrganizador(String cpf);
 }

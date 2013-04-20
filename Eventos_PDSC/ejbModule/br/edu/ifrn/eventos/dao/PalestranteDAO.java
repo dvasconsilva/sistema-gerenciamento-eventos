@@ -25,7 +25,12 @@ public class PalestranteDAO implements PalestranteDAORemote {
 
 	@PersistenceContext
 	private EntityManager em;
-	private List<Palestrante> palestrantes = new ArrayList<Palestrante>();
+	private List<Palestrante> palestrantes = null;
+	
+	public PalestranteDAO(){
+		System.out.println("Construido");
+		palestrantes = new ArrayList<Palestrante>();
+	}
 
 	@Override
 	public TrabalhoSubmetido submeterTrabalho(TrabalhoSubmetido trabalho) {
@@ -94,8 +99,10 @@ public class PalestranteDAO implements PalestranteDAORemote {
 
 	@Override
 	public void adicionaPalestrantes(Palestrante palestrante) {
-
+		System.out.println("Antes " +palestrantes.size());
 		palestrantes.add(palestrante);
+		
+		System.out.println("Antes " +palestrantes.size());
 	}
 
 	@Override
@@ -108,6 +115,14 @@ public class PalestranteDAO implements PalestranteDAORemote {
 	public void cadastrarAvaliacao(AvaliacaoTrabalho avaliacao) {
 		em.persist(avaliacao);
 
+	}
+
+	@Override
+	public void limparLista() {
+		System.out.println("limpo");
+		palestrantes = new ArrayList<Palestrante>();
+		System.out.println(palestrantes.size());
+		
 	}
 
 }

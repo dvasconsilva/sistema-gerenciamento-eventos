@@ -27,4 +27,5 @@ public interface PalestranteDAORemote {
 	public List<TrabalhoSubmetido> statusTrabalhos(String usuario);
 	
 	public void cadastrarAvaliacao(AvaliacaoTrabalho avaliacao);
+	public void limparLista();
 }

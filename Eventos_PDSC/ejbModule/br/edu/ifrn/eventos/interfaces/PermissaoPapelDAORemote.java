@@ -10,5 +10,5 @@ import br.edu.ifrn.eventos.seguranca.dominio.Usuario;
 public interface PermissaoPapelDAORemote {
 	public void adicionarPermissao(Usuario usuario, Papel papel);
 	public Papel buscarPapel(String papel);
-	public Permissao verificarPermissaoUsuario(Usuario usuario, Papel papel);
+	public boolean verificarPermissaoUsuario(Usuario usuario, Papel papel);
 }

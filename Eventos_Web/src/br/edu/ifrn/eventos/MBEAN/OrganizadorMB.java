@@ -1,21 +1,18 @@
 package br.edu.ifrn.eventos.MBEAN;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
 import org.primefaces.component.tabview.TabView;
 import org.primefaces.event.TabChangeEvent;
-
-import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
 
 import br.edu.ifrn.eventos.dominio.Atividade;
 import br.edu.ifrn.eventos.dominio.Organizador;
@@ -30,6 +27,7 @@ import br.edu.ifrn.eventos.interfaces.TipoTrabalhoDAORemote;
 import br.edu.ifrn.eventos.interfaces.UsuarioDAORemote;
 import br.edu.ifrn.eventos.seguranca.dominio.Papel;
 import br.edu.ifrn.eventos.seguranca.dominio.Usuario;
+import br.ifrn.eventos.util.Mensagens;
 
 @ManagedBean
 @SessionScoped
@@ -37,76 +35,65 @@ public class OrganizadorMB {
 
 	@EJB
 	private OrganizadorBEANRemote organizadorBEAN;
-	
 	@EJB
 	private PalestranteDAORemote palestranteDAO;
-	
 	@EJB
 	private TipoTrabalhoDAORemote tipoTrabalhoBEAN;
-	
 	@EJB
 	private AtividadeDAORemote atividadeBEAN;
-	
-	@EJB
-	private CadastroUsuarioRemote usuarioMB;
-	
 	@EJB
 	private UsuarioDAORemote usuarioBEAN;
-	
+	@EJB
+	private CadastroUsuarioRemote cadastroBEAN;
 	@EJB
 	private PermissaoPapelDAORemote permissaoBEAN;
-	
-	private UsuarioMB uMB = new UsuarioMB();
 	private Atividade atividade = new Atividade();
 	private Organizador organizador = new Organizador();
 	private Usuario usuario = new Usuario();
-	private String filtroBusca = "";
-	
+
 	private TipoTrabalho tipoT = new TipoTrabalho();
 	private List<Participante> lista_participantes = new ArrayList<Participante>();
 	private String tituloAtividade;
 	private int index = 0;
-	
-	
-	
-	public String listarParticipantes(int id){
-		 lista_participantes = this.organizadorBEAN.getParticipantes(id);
-		return "/marcar_presenca.xhtml";
+
+	public String listarParticipantes(int id) {
+		lista_participantes = this.organizadorBEAN.getParticipantes(id);
+		return "/organizador/marcar_presenca.xhtml";
 	}
-	
-	public String imprimirListarParticipantes(int id){
-		 lista_participantes = this.organizadorBEAN.getParticipantes(id);
-		 tituloDaAtividade(id);
-		return "/inscritos_atividade.xhtml";
+
+	public String imprimirListarParticipantes(int id) {
+		lista_participantes = this.organizadorBEAN.getParticipantes(id);
+		tituloDaAtividade(id);
+		return "/organizador/inscritos_atividade.xhtml";
 	}
-	
+
 	public List<Atividade> getAtividades() {
-		return this.atividadeBEAN.getAtividades(index + 1); 
+		return this.atividadeBEAN.getAtividades(index + 1);
 	}
-	
-	public void tituloDaAtividade(int id){
+
+	public void tituloDaAtividade(int id) {
 		Atividade at = this.atividadeBEAN.getAtividade(id);
 		tituloAtividade = at.getTrabalho().getTitulo();
 	}
-	
-	public void onTabChange(TabChangeEvent event) {  
+
+	public void onTabChange(TabChangeEvent event) {
 		TabView tv = (TabView) event.getComponent();
-        this.index  = tv.getActiveIndex();
-		
-    } 
-	
-	public String salvar(){
+		this.index = tv.getActiveIndex();
+
+	}
+
+	public String salvar() {
 		for (Participante p : lista_participantes) {
 			this.organizadorBEAN.salvarPresenca(p);
 		}
-		
+
 		return "/listar_atividades.xhtml";
 	}
-	
-	public void change(ValueChangeEvent event){
+
+	public void change(ValueChangeEvent event) {
 		System.out.println(event.getNewValue().toString());
 	}
-	
+
 	public List<SelectItem> getTipoTrabalho() {
 		List<TipoTrabalho> tipos = palestranteDAO.listarTiposTrabalhos();
 		List<SelectItem> itens = new ArrayList<SelectItem>(tipos.size());
@@ -117,69 +104,45 @@ public class OrganizadorMB {
 
 		return itens;
 	}
-	
-	// crud organizador
-		//retorna os organizadores cadastrados
-		public List<Organizador> getListarOrganizadores() throws IOException {
-			return this.organizadorBEAN.ListarOrganizador();
-		}
 
-		public void excluirOrganizador(Organizador organizador) {
-			System.out.println("excluir organizador: "
-					+ organizador.getUsuario().getNome());
-			this.organizadorBEAN.excluirOrganizador(organizador);
-
-			//try {
-				//this.buscar();
-			//} catch (IOException exception) {
-			//	exception.printStackTrace();
-			//}
-		}
-		
-		public String salvarOrganizador(){
-			organizador = this.organizadorBEAN.buscarOrganizador(uMB.UsuarioLogado());
-			
-			return "/ListarOrganizador.xhtml";
-		}
 	
-		
-		public void cadastrarOrganizador() throws MessagingException, UnsupportedEncodingException, javax.mail.MessagingException {
-			Usuario verificarUsuario = this.usuarioBEAN.buscarUsuario(usuario.getCpf());
+	public void cadastrarOrganizador() throws UnsupportedEncodingException,
+			javax.mail.MessagingException {
+	
+		if(!this.organizadorBEAN.verificarOrganizador(usuario.getCpf())){
 			
-			if(verificarUsuario == null){
+			Usuario verificarUsuario = this.usuarioBEAN.buscarUsuario(usuario
+					.getCpf());
+			
+			if (verificarUsuario == null) {
 				usuario.setSenha("eventos");
-				Usuario u  = this.usuarioMB.CadastrarUsuario(usuario);
-				Papel papel = this.permissaoBEAN.buscarPapel("Role_Organizador");
+				Usuario u = this.cadastroBEAN.CadastrarUsuario(usuario);
+				Papel papel = this.permissaoBEAN
+						.buscarPapel("Role_Organizador");
 				this.permissaoBEAN.adicionarPermissao(u, papel);
-				
+
 				organizador.setUsuario(u);
 				this.organizadorBEAN.CadastrarOrganizador(organizador);
-			}else{
-				Papel papel = this.permissaoBEAN.buscarPapel("Role_Organizador");
-				this.permissaoBEAN.adicionarPermissao(verificarUsuario, papel);
 				
+				new Mensagens().sucesso(FacesContext.getCurrentInstance(), "Organizador Cadastrado com Sucesso!");
+				usuario = new Usuario();
+			} else if(verificarUsuario != null){
+				Papel papel = this.permissaoBEAN
+						.buscarPapel("Role_Organizador");
+				this.permissaoBEAN.adicionarPermissao(verificarUsuario, papel);
+
 				organizador.setUsuario(verificarUsuario);
 				this.organizadorBEAN.CadastrarOrganizador(organizador);
+				new Mensagens().sucesso(FacesContext.getCurrentInstance(), "Organizador Cadastrado com Sucesso!");
+				usuario = new Usuario();
 			}
+		}else {
+			new Mensagens().erro(FacesContext.getCurrentInstance(), "Este usuario j� � organizador");
 		}
 
-		
-		public String update() throws UnsupportedEncodingException, MessagingException, javax.mail.MessagingException{
-			usuario = this.usuarioMB.AlterarUsuario(usuario);
-			organizador.setUsuario(usuario);
-			this.organizadorBEAN.AlterarOrganizador(organizador);
-			usuario = new Usuario();
-			organizador = new Organizador();
-			return "/Listar_Organizador.xhtml";
-		}
-		
-		public String atualizar(Organizador organizador){
-			this.usuario = organizador.getUsuario();
-			this.organizador = organizador;
-			return "editar_organizador.xhtml";
-		}
+	}
 
-	public List<TipoTrabalho> getTiposTrabalho(){
+	public List<TipoTrabalho> getTiposTrabalho() {
 		return this.tipoTrabalhoBEAN.listarTipoTrabalhos();
 	}
 
@@ -207,14 +170,6 @@ public class OrganizadorMB {
 		this.tituloAtividade = tituloAtividade;
 	}
 
-	public UsuarioMB getuMB() {
-		return uMB;
-	}
-
-	public void setuMB(UsuarioMB uMB) {
-		this.uMB = uMB;
-	}
-
 	public Atividade getAtividade() {
 		return atividade;
 	}
@@ -239,13 +194,4 @@ public class OrganizadorMB {
 		this.usuario = usuario;
 	}
 
-	public String getFiltroBusca() {
-		return filtroBusca;
-	}
-
-	public void setFiltroBusca(String filtroBusca) {
-		this.filtroBusca = filtroBusca;
-	}
-	
-	
 }

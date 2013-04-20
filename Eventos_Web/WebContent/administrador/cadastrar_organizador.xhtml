@@ -7,13 +7,14 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
-<ui:composition template="/template.xhtml">
+<ui:composition template="/index2.xhtml">
 	<ui:define name="conteudo">
 	
 		<h1>Cadastrar Organizador</h1>
 			<h:form>
-			<p:messages id="messages" showDetail="false" autoUpdate="true"
+			<p:growl id="messages" showDetail="true" autoUpdate="true"
 				closable="true" />
+			
 
 				<h:panelGrid columns="2">
 					<h:outputText value="Nome: " />
@@ -23,8 +24,6 @@
 						value="#{organizadorMB.usuario.cpf}" required="true" />
 					<h:outputText value="Email: " />
 					<p:inputText value="#{organizadorMB.usuario.email}" required="true" />
-					<h:outputText value="Senha: " />
-					<p:password value="#{organizadorMB.usuario.senha}" rendered="true" />
 					<h:commandButton action="#{organizadorMB.cadastrarOrganizador}"
 						value="Salvar" />
 				</h:panelGrid>

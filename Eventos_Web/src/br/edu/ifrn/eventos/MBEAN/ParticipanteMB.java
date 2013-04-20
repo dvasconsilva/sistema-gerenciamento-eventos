@@ -16,13 +16,19 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseStream;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.RenderKit;
+import javax.persistence.metamodel.ListAttribute;
+
+import org.primefaces.component.tabview.TabView;
+import org.primefaces.event.TabChangeEvent;
 
 import br.edu.ifrn.eventos.dominio.Atividade;
 import br.edu.ifrn.eventos.dominio.Palestrante;
 import br.edu.ifrn.eventos.dominio.Participante;
+import br.edu.ifrn.eventos.dominio.TipoTrabalho;
 import br.edu.ifrn.eventos.interfaces.AtividadeDAORemote;
 import br.edu.ifrn.eventos.interfaces.PalestranteDAORemote;
 import br.edu.ifrn.eventos.interfaces.ParticipanteMBRemote;
+import br.edu.ifrn.eventos.interfaces.TipoTrabalhoDAORemote;
 import br.ifrn.eventos.util.Mensagens;
 
 @ManagedBean
@@ -35,14 +41,21 @@ public class ParticipanteMB {
 	@EJB
 	private ParticipanteMBRemote participanteBEAN;
 	
-	@EJB PalestranteDAORemote palestranteBEAN;
+	@EJB 
+	private PalestranteDAORemote palestranteBEAN;
+	
+	@EJB
+	private TipoTrabalhoDAORemote tipoTrabalhoBEAN;
 	
 	private Atividade atividade;
 	private List<Atividade> atividadeAdicinada = new ArrayList<Atividade>();
 	private List<Palestrante> palestrantes = new ArrayList<Palestrante>();
 	
+
+	private int index = 0;
+	
 	public List<Atividade> getListarAtividades(){
-		return this.atividadeBEAN.getAtividades();
+		return this.atividadeBEAN.getAtividades(index + 1);
 	}
 	
 	public String detalhesAtividade(Atividade a){
@@ -61,10 +74,25 @@ public class ParticipanteMB {
 		participante.setAtividade(atividadeAdicinada);
 		
 		this.participanteBEAN.adicionarAtividade(participante);
+				
+		index = 0;
+		
+		getListarAtividades();
 		
 		return "/participante/listar_atividades.xhtml";
 	}
 	
+	public void onTabChange(TabChangeEvent event) {  
+		TabView tv = (TabView) event.getComponent();
+        this.index = tv.getActiveIndex();
+        
+        
+		
+    }  
+	
+	public List<TipoTrabalho> getTipoTrabalho(){
+		return this.tipoTrabalhoBEAN.listarTipoTrabalhos();
+	}
 	
 	public Atividade getAtividade() {
 		return atividade;
